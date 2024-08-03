@@ -5,7 +5,7 @@ import { MoveLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 
 
-export const BackButton = ({text = "kembali", className, variant = "secondary",  ...props}) => {
+export const BackButton = ({text = "Back", className, variant = "secondary",  ...props}) => {
    const router = useRouter()
    return (
       <>
