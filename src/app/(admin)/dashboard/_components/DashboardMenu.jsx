@@ -2,7 +2,6 @@
 import { Tooltip, TooltipTrigger, TooltipContent } from "@radix-ui/react-tooltip"
 import { Tag, UsersRound, LayoutDashboard, Car, HandCoins } from "lucide-react"
 import Link from "next/link"
-import { activeLink } from "@/components/common/Navbar"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 
@@ -37,6 +36,12 @@ const dashboardMenu = [
 const DashboardMenu = () => {
    const pathname = usePathname()
 
+   const activeLinkDashboard = (link,pathname) => {
+      return link === "/dashboard" && pathname !== "/dashboard"
+      ? false
+      : pathname === link || pathname.startsWith(link + '/');
+    }
+
   return (
    <>
        <div className="mt-10 flex flex-col gap-4">
@@ -45,7 +50,7 @@ const DashboardMenu = () => {
             <TooltipTrigger asChild>
                <Link
                   href={item.link}
-                  className={cn(`flex items-center justify-center rounded-lg transition-colors p-2  ${activeLink(item.link, pathname) ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground hover:bg-primary/30"}`)}
+                  className={cn(`flex items-center justify-center rounded-lg transition-colors p-2  ${activeLinkDashboard(item.link, pathname) ? "bg-primary text-primary-foreground" : "bg-accent text-accent-foreground hover:bg-primary/30"}`)}
                   prefetch={false}
                >
                   {item.icon}
@@ -53,7 +58,7 @@ const DashboardMenu = () => {
                </Link>
             </TooltipTrigger>
             <TooltipContent side="right">
-               <span className={`p-2 rounded ml-2 ${activeLink(item.link, pathname) ? "bg-primary text-primary-foreground" : "bg-accent shadow-md text-accent-foreground"}`}>{item.text}</span>
+               <span className={`p-2 rounded ml-2 ${activeLinkDashboard(item.link, pathname) ? "bg-primary text-primary-foreground" : "bg-accent shadow-md text-accent-foreground"}`}>{item.text}</span>
             </TooltipContent>
             </Tooltip>
          ))}
