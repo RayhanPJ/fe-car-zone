@@ -47,7 +47,7 @@ const DashboardMenu = () => {
    <>
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-24 flex-col border-r bg-background sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-            <CarZoneLogo className={"w-20"} />
+            <CarZoneLogo className={"w-20 dark:fill-white"} />
             <TooltipProvider className="mt-10 flex flex-col gap-4">
                {dashboardMenu.map(item => (
                   <Tooltip key={item.link}>
