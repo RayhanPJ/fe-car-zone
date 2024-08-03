@@ -1,6 +1,3 @@
-import { CarZoneLogo } from "@/components/icons"
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
-import Link from "next/link"
 import { Sheet, SheetTrigger } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import ThemeToggler from "@/components/common/ThemeToggler"
@@ -18,22 +15,8 @@ export const metadata = {
 export default function DashboardLayout({ children }) {
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-20 flex-col border-r bg-background sm:flex">
-        <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
-          <TooltipProvider>
-            <Link
-              href="/dashboard"
-              className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary/30 text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-              prefetch={false}
-            >
-              <CarZoneLogo className="h-4 w-4 transition-all group-hover:scale-110" />
-              <span className="sr-only">Acme Inc</span>
-            </Link>
-            <DashboardMenu />
-          </TooltipProvider>
-        </nav>
-      </aside>
-      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-20">
+      <DashboardMenu />
+      <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-24">
         <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
           <Sheet>
             <SheetTrigger asChild>
