@@ -4,6 +4,7 @@ import "./globals.css"
 import ProgressBarProvider from "@/components/common/ProgressBarProvider";
 import ThemeProvider from "@/components/common/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import ScrollTop from "@/components/common/ScrollTop";
 
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
         <ThemeProvider>
           <ProgressBarProvider>
             {children}
+            <ScrollTop />
             <Toaster duration={3000} />
           </ProgressBarProvider>
         </ThemeProvider>
