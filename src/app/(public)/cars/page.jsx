@@ -4,6 +4,7 @@ import Image from "next/image"
 import GridContainer from "@/components/common/GridContainer"
 import { SUVIcon } from "@/components/icons"
 import { Tag } from "lucide-react"
+import Link from "next/link"
 
 import SearchForm from "./_components/SearchForm"
 import HeaderArticle from "./_components/HeaderArticle"
@@ -40,10 +41,15 @@ const CarsPage = () => {
                   <span className="flex items-center gap-2 font-bold"><Tag className="size-5" /> Suzuki </span>
                </div>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="space-x-2">
                <Button className="capitalize w-full">
                   Beli sekarang
                </Button>
+               <Link 
+                  className="btn btn-outline"
+                  href={`/cars/${i}`}>
+                  Detail
+               </Link>
             </CardFooter>
          </Card>
       ))}
