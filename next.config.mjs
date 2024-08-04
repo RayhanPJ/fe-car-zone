@@ -12,9 +12,6 @@ const nextConfig = {
          hostname: '**',
        },
      ],
-   },
-   env: {
-    API_BASE: "https://dummyjson.com",
    }
 };
 
