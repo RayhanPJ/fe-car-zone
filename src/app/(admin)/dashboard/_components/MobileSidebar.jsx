@@ -2,7 +2,7 @@
 
 import { DashboardNav } from '@/components/common/DashboardNav';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { navItems } from '@/constants/data';
+import { navItems } from '@/constants/dashboard-nav';
 import { MenuIcon } from 'lucide-react';
 import { useState } from 'react';
 

@@ -15,7 +15,7 @@ const CarDetail = () => {
    <>
       <Accordion type="single" collapsible  className="border px-3">
          <AccordionItem value="item-1">
-            <AccordionTrigger className="font-bold">Detail Mobil</AccordionTrigger>
+            <AccordionTrigger className="font-bold">Car Detail</AccordionTrigger>
             <AccordionContent>
             
             <figure className="w-full">
@@ -38,7 +38,7 @@ const CarDetail = () => {
 
             <Accordion type="single" collapsible  className="border px-3">
                <AccordionItem value="item-1">
-                  <AccordionTrigger>Deskripsi</AccordionTrigger>
+                  <AccordionTrigger>Description</AccordionTrigger>
                   <AccordionContent>
                   Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est ea accusamus vitae excepturi quas mollitia atque ab minima, tempore cum odit qui totam incidunt fuga veniam? Sunt commodi rerum ipsa repellendus? Optio eveniet rem repudiandae rerum, possimus magnam, sapiente nihil totam, magni mollitia voluptate voluptates unde cupiditate veniam?
                   </AccordionContent>

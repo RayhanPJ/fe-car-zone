@@ -21,14 +21,14 @@ const CheckoutPage = () => {
     </div>
 
     <div className="main-container mt-20">
-      <h1 className="text-4xl font-bold">Detail pembayaran</h1>
+      <h1 className="text-4xl font-bold">Payment Details</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-10">
         <div className="flex flex-col gap-2">
           <Card>
             <CardHeader>
-              <CardTitle className="mb-3">Pilih Bank Transfer</CardTitle>
-              <p>Kamu bisa membayar dengan transfer melalui ATM, Internet Banking atau Mobile Banking</p>
+              <CardTitle className="mb-3">Choose payment menthod</CardTitle>
+              <p>You can use payment using, mobile banking, bank transfer and internet banking.</p>
             </CardHeader>
 
             <CardContent className="flex flex-col gap-2">
@@ -43,7 +43,6 @@ const CheckoutPage = () => {
           </Card>
         </div>
       </div>
-
       <BackButton className={"my-10"} />
     </div>
   </>
