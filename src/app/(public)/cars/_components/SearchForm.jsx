@@ -21,7 +21,7 @@ const SearchForm = () => {
    <form action="" className="flex flex-col md:flex-row items-end gap-3">
       <div className="grid w-full items-center gap-1.5">
          <Label htmlFor="car" className="mb-2">Keyword</Label>
-         <Input type="search" id="car" placeholder="Masukkan keyword..." />
+         <Input type="search" id="car" placeholder="keyword..." />
       </div>
       <div className="grid w-full items-center gap-1.5">
          <Label htmlFor="brand" className="mb-2">Brand</Label>
@@ -31,7 +31,7 @@ const SearchForm = () => {
             </SelectTrigger>
             <SelectContent>
             <SelectGroup>
-               <SelectLabel>Brand mobil</SelectLabel>
+               <SelectLabel>Car Brand</SelectLabel>
                <SelectItem value="sad" >Apple</SelectItem>
                <SelectItem value="banana">Banana</SelectItem>
                <SelectItem value="blueberry">Blueberry</SelectItem>
@@ -43,7 +43,7 @@ const SearchForm = () => {
       </div>
       <Button type="submit" 
          className="w-full md:w-auto"
-         >Cari</Button>
+         >Search</Button>
    </form>
 </Card>
 </>
