@@ -70,7 +70,7 @@ const Navbar = () => {
             <CarZoneLogo className={"size-12 dark:fill-white"} />
           </Link>
 
-          <ul className="hidden lg:flex items-center gap-4">
+          <ul className="hidden xl:flex items-center gap-4">
             {publicRoute.map((item) => (
               <li key={item.link}>
                 <Link
@@ -86,7 +86,7 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <ul className="hidden lg:flex items-center gap-3">
+          <ul className="hidden xl:flex items-center gap-3">
             <li>
               <ThemeToggler />
             </li>
@@ -95,7 +95,7 @@ const Navbar = () => {
             ))}
           </ul>
           {/* mobile */}
-          <div className="flex items-center lg:hidden">
+          <div className="flex items-center xl:hidden">
             <ul className="flex item-center gap-3 bg-blue">
               <li>
                 <ThemeToggler />
