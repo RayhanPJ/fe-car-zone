@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const Banner = () => {
   return (
@@ -11,9 +12,11 @@ const Banner = () => {
         pariatur dignissimos similique dolore vero aspernatur possimus. At ut
         aliquam perferendis!
       </p>
-      <Button className="btn btn-success hover:bg-success-900 max-w-32">
-        Get Started
-      </Button>
+      <Link href="/cars">
+        <Button className="btn btn-success hover:bg-success-900 max-w-32">
+          Get Started
+        </Button>
+      </Link>
     </section>
   );
 };

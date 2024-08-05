@@ -40,7 +40,11 @@ const HomePage = () => {
          </Button>
      </div>
      <h1>Home page</h1> */}
-      <Hero />
+      <div className="bg-secondary relative before:content-[''] before:absolute before:h-3/4 md:before:h-2/4 md:before:w-[50vw] before:rounded-t-[100px] md:before:rounded-t-[unset] before:w-screen md:before:rounded-tl-[100px] before:bg-primary/90 before:bottom-0 before:right-0">
+        <div className="min-h-52 main-container relative">
+          <Hero />
+        </div>
+      </div>
       <OurServices />
       <WhyUs />
       <Testimony />
