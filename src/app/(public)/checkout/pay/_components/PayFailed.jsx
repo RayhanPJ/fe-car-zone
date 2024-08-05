@@ -2,7 +2,7 @@
 
 import { X } from "lucide-react"
 
-const PaySuccess = () => {
+const PayFailed = () => {
   return (
    <>
       <div className="mx-auto text-center">
@@ -16,4 +16,4 @@ const PaySuccess = () => {
   )
 }
 
-export default PaySuccess
+export default PayFailed
