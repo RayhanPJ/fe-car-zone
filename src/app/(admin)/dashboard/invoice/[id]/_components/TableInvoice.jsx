@@ -16,7 +16,10 @@ const TableInvoice = ({ product }) => {
         <tbody>
           <tr>
             <td className="py-3 px-4">
-              <strong className="text-primary">{product.name}</strong> <br />
+              <strong className="text-primary">
+                {product.brand} {product.model}
+              </strong>{" "}
+              <br />
               <span className="text-sm">variant: {product.variant} </span>
             </td>
             <td className="py-3 px-4 text-center">{product.quantity}</td>

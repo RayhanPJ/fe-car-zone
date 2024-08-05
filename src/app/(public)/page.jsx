@@ -8,7 +8,7 @@ import Question from "./_components/Question";
 
 const HomePage = () => {
   return (
-    <section className="flex flex-col gap-12 pl-5 mx-auto 2xl:mx-48">
+    <section className="flex flex-col gap-12 px-5 mx-auto 2xl:mx-48">
       {/* <div className='main-container flex flex-wrap gap-2'>
          <Button variant="default">
            default
