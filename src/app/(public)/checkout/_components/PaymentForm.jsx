@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { usePayment } from "./usePayment";
 import { Landmark } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { carsData } from "@/constants/dummy";
 
 const banks = [
   {
@@ -29,10 +29,10 @@ const PaymentForm = () => {
 
   const handleChange = (e) => {
     const id = e.target.value;
-    console.log(banks.find((item) => item.id == id).name);
+    console.log(carsData.filter(c => c.id === payment.carID)[0].price)
     setPaymentProvider(banks.find((item) => item.id == id).name);
     setNoRek(banks.find((item) => item.id == id).rek);
-    setTotalAmount(120_000_000);
+    setTotalAmount(carsData.filter(c => c.id === payment.carID)[0].price);
   };
 
   return (

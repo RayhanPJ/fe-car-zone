@@ -15,6 +15,7 @@ const HeaderArticle = () => {
                src={"/static/mercy-car.png"}
                width={500}
                height={500}
+               priority
                className="mx-auto"
                alt="mercedez benz car"
                />

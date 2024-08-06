@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const layout = ({ children }) => {
   return (
-    <div className="min-h-svh p-10">
+    <div className="min-h-svh p-10 main-container-lg">
       <Header />
 
       <div className="mt-5">
