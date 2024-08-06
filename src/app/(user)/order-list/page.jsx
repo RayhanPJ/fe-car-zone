@@ -55,7 +55,7 @@ const OrderListPage = () => {
           </CardContent>
         </div>
         <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/dashboard/invoice/${id}`}>
+          <Link href={`/invoice/${id}`}>
             <Button>Detail Transaction</Button>
           </Link>
         </CardFooter>
@@ -88,7 +88,7 @@ const OrderListPage = () => {
           </CardContent>
         </div>
         <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/dashboard/invoice/${id}`}>
+          <Link href={`/invoice/${id}`}>
             <Button>Detail Transaction</Button>
           </Link>
         </CardFooter>
@@ -121,73 +121,7 @@ const OrderListPage = () => {
           </CardContent>
         </div>
         <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/dashboard/invoice/${id}`}>
-            <Button>Detail Transaction</Button>
-          </Link>
-        </CardFooter>
-      </Card>
-      <Card className="mr-5">
-        <div className="grid grid-cols-8">
-          <div className="pt-6 pl-6 col-span-1 flex justify-center items-center">
-            <Image
-              className="rounded-xl"
-              src="/logo.png"
-              alt="car"
-              width={100}
-              height={100}
-            />
-          </div>
-          <CardHeader className="col-span-3 xs:col-span-4 sm:col-span-5">
-            <CardTitle>
-              {product.brand} {product.model}
-            </CardTitle>
-            <CardDescription>
-              {product.variant} | {product.color}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="col-span-4 xs:col-span-3 sm:col-span-2">
-            <div className="pt-6 flex flex-col items-center justify-center h-full">
-              <p>Total Shipping</p>
-              <p className="font-bold">{formatCurrency(product.total)}</p>
-            </div>
-          </CardContent>
-        </div>
-        <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/dashboard/invoice/${id}`}>
-            <Button>Detail Transaction</Button>
-          </Link>
-        </CardFooter>
-      </Card>
-      <Card className="mr-5">
-        <div className="grid grid-cols-8">
-          <div className="pt-6 pl-6 col-span-1 flex justify-center items-center">
-            <Image
-              className="rounded-xl"
-              src="/logo.png"
-              alt="car"
-              width={100}
-              height={100}
-            />
-          </div>
-          <CardHeader className="col-span-3 xs:col-span-4 sm:col-span-5">
-            <CardTitle>
-              {product.brand} {product.model}
-            </CardTitle>
-            <CardDescription>
-              {product.variant} | {product.color}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="col-span-4 xs:col-span-3 sm:col-span-2">
-            <div className="pt-6 flex flex-col items-center justify-center h-full">
-              <p>Total Shipping</p>
-              <p className="font-bold">{formatCurrency(product.total)}</p>
-            </div>
-          </CardContent>
-        </div>
-        <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/dashboard/invoice/${id}`}>
+          <Link href={`/invoice/${id}`}>
             <Button>Detail Transaction</Button>
           </Link>
         </CardFooter>
