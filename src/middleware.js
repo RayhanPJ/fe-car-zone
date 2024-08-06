@@ -31,7 +31,7 @@ export function middleware(request) {
     if (tokenValue && !isTokenExpired(tokenValue)) {
       return NextResponse.next();
     }
-    return redirectTo('/');
+    return redirectTo('/cars');
   }
   
 
