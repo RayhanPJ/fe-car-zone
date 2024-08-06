@@ -34,7 +34,7 @@ export const navItems = [
    },
    {
      title: 'Transactions',
-     href: '/dashboard/transactionss',
+     href: '/dashboard/transactions',
      icon: <HandCoins />,
      label: 'transactions'
    },
