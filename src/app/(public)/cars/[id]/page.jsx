@@ -12,13 +12,17 @@ import {
 import { Button } from "@/components/ui/button"
 import { BackButton } from "@/components/common/BackButton"
 import { Tooltip, TooltipTrigger, TooltipProvider, TooltipContent } from "@/components/ui/tooltip"
+import { carsData } from "@/constants/dummy"
+import formatCurrency from "@/lib/currencyFormat"
 
 export const metadata = {
    title: "Car Detail - Carzone best car dealer website"
 }
 
-const CarsDetailPage = () => {
-  return (
+const CarsDetailPage = ({ params }) => {
+   const car = carsData.find(item => item.id == params.id)
+   console.log(car)
+   return (
    <>
    <div className="bg-secondary">
       <div className="min-h-52 main-container flex items-center">
@@ -33,25 +37,25 @@ const CarsDetailPage = () => {
       <Card className="w-full overflow-hidden">
          <Image 
             className="w-full h-full object-cover object-center"
-            src={"https://imgd.aeplcdn.com/370x208/n/cw/ec/130591/fronx-exterior-right-front-three-quarter-109.jpeg"}
+            src={car.image}
             width={500}
             height={500}
             />
       </Card>
       <Card>
          <CardHeader>
-            <h1 className="text-2xl font-semibold capitalize">Lorem ipsum dolor sit amet.</h1>
+            <h1 className="text-2xl font-semibold capitalize">{car.brand} {car.model}</h1>
          </CardHeader>
          <CardContent>
             <article>
-               <p className="text-xl my-4">IDR. 120.000.000</p>
+               <p className="text-xl my-4">{formatCurrency(car.price)}</p>
 
                <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-start gap-3">
                   <TooltipProvider>
                      <Tooltip>
                         <TooltipTrigger>
                            <span className="flex items-center gap-2 font-bold py-1 px-2 hover:bg-secondary rounded-md">
-                              <Car className={"size-7"} /> SUV </span>
+                              <Car className={"size-7"} /> {car.type} </span>
                         </TooltipTrigger>
                         <TooltipContent>
                            <p>Car Type</p>
@@ -60,7 +64,7 @@ const CarsDetailPage = () => {
                      <Tooltip>
                         <TooltipTrigger>
                            <span className="flex items-center gap-2 font-bold py-1 px-2 hover:bg-secondary rounded-md">
-                              <Tag className="size-5" /> Suzuki </span>
+                              <Tag className="size-5" /> {car.brand} </span>
                         </TooltipTrigger>
                         <TooltipContent>
                            <p>Car Brand</p>
@@ -83,9 +87,7 @@ const CarsDetailPage = () => {
                   <AccordionItem value="car-description">
                      <AccordionTrigger>Description</AccordionTrigger>
                      <AccordionContent className="flex flex-col gap-2">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam vitae error inventore eum odit sit, iste ad ipsam culpa maxime nemo accusantium molestias quas. Beatae iusto at fugiat? Ex, pariatur?</p>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem vel ipsum expedita porro repudiandae magnam? Necessitatibus tempora neque porro, earum itaque voluptatem amet rem corporis quisquam, molestiae reiciendis. Fuga, fugit?</p>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Exercitationem vel ipsum expedita porro repudiandae magnam? Necessitatibus tempora neque porro, earum itaque voluptatem amet rem corporis quisquam, molestiae reiciendis. Fuga, fugit?</p>
+                        {car.description}
                      </AccordionContent>
                   </AccordionItem>
                </Accordion>

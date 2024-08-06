@@ -9,10 +9,11 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { useEffect, useLayoutEffect, useState } from "react"
 import { Copy, Check, Landmark } from "lucide-react"
+import formatCurrency from "@/lib/currencyFormat"
 
 
 const PayCard = () => {
-   const { payment } = usePayment()
+   const { payment, setPaymentProof } = usePayment()
    const { copiedText, copy } = useCopyToClipboard()
    const router = useRouter()
    const [selectedImage, setSelectedImage] = useState(null)
@@ -34,11 +35,12 @@ const PayCard = () => {
    const handleImage = (e) => {
       const file = e.target.files[0]
       setSelectedImage(URL.createObjectURL(file))
+      setPaymentProof(URL.createObjectURL(file))
    }
 
    useEffect(() => {
-      console.log(selectedImage)
-   }, [selectedImage])
+      alert(JSON.stringify(payment))
+   }, [payment])
 
   return (
    <>
@@ -64,14 +66,14 @@ const PayCard = () => {
          <div className="">
             <Label className="mb-3">Total</Label>
             <div className="flex justify-between px-2 items-center gap-2  border border-secondary p-1 rounded-md">
-               <span>{payment.totalAmount}</span>
+               <span>{formatCurrency(payment.totalAmount)}</span>
                <Button 
                      onClick={() => copy(payment.totalAmount)}
                   >{(copiedText == payment.totalAmount) ? <Check />  : <Copy /> } </Button>
             </div>
          </div>
       </div>
-      <form action="">
+      <form action="" onSubmit={e => e.preventDefault()}>
          <div className="my-3">
             <span>Upload transfer proof</span>
             <label htmlFor="proof-payment" className="mt-4 grid gap-4 cursor-pointer">
