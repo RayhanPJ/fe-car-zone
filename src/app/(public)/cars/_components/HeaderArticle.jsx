@@ -7,8 +7,8 @@ const HeaderArticle = () => {
    <>
       <header className="flex flex-col-reverse md:flex-row justify-between py-10 items-center">
          <article className="w-full text-primary-foreground md:text-accent-foreground">
-            <h1 className="w-full md:w-[90%] text-4xl font-bold capitalize text-center md:text-left">Beli & dapatkan Mobil Terbaik hanya dari kami</h1>
-            <p className="text-base mt-3 w-full md:w-3/4 text-center md:text-left">Selamat datang di CarZone. Kami menyediakan mobil kualitas terbaik dengan harga terjangkau. Siap memberikan layanan terbaik untuk anda.</p>
+            <h1 className="w-full md:w-[90%] text-4xl font-bold capitalize text-center md:text-left">Buy the best car, here!</h1>
+            <p className="text-base mt-3 w-full md:w-3/4 text-center md:text-left">Welcome to CarZone. We provide the best cars for you. Choose and buy only at CarZone.</p>
          </article>
          <div className="w-full">
             <Image 

@@ -1,6 +1,7 @@
 const data = [
   {
     id: 1,
+    user_id: 1,
     invoice_no: "INV-001/2024/08/05/SUV/81278624872",
     buyer: "Salman Wiharja",
     date: "31 July 2024",
@@ -11,7 +12,8 @@ const data = [
     },
     product: {
       id: 1,
-      name: "GT-R NISMO®",
+      brand: "Nissan",
+      model: "GT-R NISMO®",
       variant: "ATTESA E-TS® All-Wheel Drive",
       color: "Black",
       quantity: 1,
