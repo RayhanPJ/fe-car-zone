@@ -69,12 +69,12 @@ const Testimony = () => {
               delay: 2000,
             }),
           ]}
-          className="w-full max-w-xl"
+          className="w-full"
         >
           <CarouselContent>
             {testi.map((item, index) => (
-              <CarouselItem key={index}>
-                <Card className="flex flex-row px-5 py-10">
+              <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                <Card className="flex items-center flex-col sm:flex-row px-5 py-10 shadow cursor-grab">
                   <CardHeader className="flex flex-col justify-center max-w-64">
                     <Image
                       src={item.image}
@@ -93,7 +93,9 @@ const Testimony = () => {
                         />
                       ))}
                     </span>
-                    <p>{item.review}</p>
+                    <p className="sm:line-clamp-3 sm:hover:line-clamp-3 select-none">
+                      {item.review}
+                    </p>
                     <h4 className="font-bold">{item.name}</h4>
                   </CardContent>
                 </Card>
