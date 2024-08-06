@@ -1,4 +1,4 @@
-import { LayoutDashboard, User, Users,Car, HandCoins } from "lucide-react";
+import { LayoutDashboard, Tag, Users,Car, HandCoins, CarFront } from "lucide-react";
 
 // dashboard navbar
 export const navItems = [
@@ -9,22 +9,28 @@ export const navItems = [
      label: 'Dashboard'
    },
    {
-     title: 'User',
-     href: '/dashboard/user',
-     icon: <User />,
-     label: 'user'
-   },
-   {
-     title: 'Admin',
-     href: '/dashboard/admin',
+     title: 'Users',
+     href: '/dashboard/users',
      icon: <Users />,
-     label: 'admin'
+     label: 'users'
    },
    {
-     title: 'Car',
+     title: 'Cars',
      href: '/dashboard/cars',
      icon: <Car />,
-     label: 'car'
+     label: 'cars'
+   },
+   {
+     title: 'Brands',
+     href: '/dashboard/brands',
+     icon: <Tag />,
+     label: 'brand'
+   },
+   {
+     title: 'Car types',
+     href: '/dashboard/car-types',
+     icon: <CarFront />,
+     label: 'car-type'
    },
    {
      title: 'Transactions',

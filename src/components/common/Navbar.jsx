@@ -8,6 +8,8 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import ThemeToggler from "./ThemeToggler";
 import { CarZoneLogo } from "../icons";
+import { useAuth } from "@/hooks/useAuth";
+import { UserNav } from "./UserNav";
 
 export const publicRoute = [
   {
@@ -61,6 +63,7 @@ export const activeLink = (link, pathname) => {
 
 const Navbar = () => {
   const pathname = usePathname();
+  const { auth } = useAuth()
 
   return (
     <nav className="bg-background w-full sticky top-0 z-50">
@@ -84,15 +87,29 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
+            {auth?.role === 'admin' &&
+              <li>
+              <Link
+                  href={"/dashboard"}
+                  className={cn(
+                    "nav-link",
+                    activeLink("/dashboard", pathname) && "active"
+                  )}
+                >
+                dashboard
+              </Link>
+            </li>
+            }
           </ul>
 
           <ul className="hidden xl:flex items-center gap-3">
             <li>
               <ThemeToggler />
             </li>
-            {unAuthRoute.map((item) => (
-              <li key={item.link}>{item.content}</li>
-            ))}
+            {!auth?.token && unAuthRoute.map((item) => (
+                <li key={item.link}>{item.content}</li>
+              ))}
+            {auth?.token && <li><UserNav /></li> }
           </ul>
           {/* mobile */}
           <div className="flex items-center xl:hidden">
@@ -100,6 +117,7 @@ const Navbar = () => {
               <li>
                 <ThemeToggler />
               </li>
+              {auth?.token && <li><UserNav /></li> }
             </ul>
             {/* sidebar menu */}
             <Sheet>
@@ -111,20 +129,36 @@ const Navbar = () => {
               <SheetContent>
                 <ul className="flex flex-col justify-center items-center text-center gap-2 my-20 w-full">
                   {publicRoute.map((item) => (
-                    <li key={item.link} className="w-full flex">
+                    <li key={item.link} className="my-4">
                       <Link
                         href={item.link}
-                        className="capitalize text-base font-medium btn btn-ghost w-full"
-                      >
+                        className={cn(
+                          "nav-link",
+                          activeLink(item.link, pathname) && "active"
+                        )}
+                          >
                         {item.content}
                       </Link>
                     </li>
                   ))}
+                  {auth?.role === 'admin' &&
+                    <li>
+                    <Link
+                        href={"/dashboard"}
+                        className={cn(
+                          "nav-link",
+                          activeLink("/dashboard", pathname) && "active"
+                        )}
+                      >
+                      dashboard
+                    </Link>
+                  </li>}
+                  
 
                   <Separator className="my-7" />
 
                   <div className="w-full flex flex-col gap-2 items-center justify-center">
-                    {unAuthRoute.map((item) => (
+                    {!auth?.token &&  unAuthRoute.map((item) => (
                       <span key={item.link} className="w-full">
                         {item.content}
                       </span>

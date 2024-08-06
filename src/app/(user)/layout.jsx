@@ -11,8 +11,8 @@ const layout = ({ children }) => {
         <Header />
 
         <div className="mt-5">
-          <div className="hidden lg:flex gap-5">
-            <div className="w-60 min-h-[70vh]">
+          <div className="flex flex-col md:flex-row gap-5">
+            <div className="min-w-fit">
               <ul className="gap-2 flex flex-col text-base font-medium">
                 <Link href="/profile">
                   <li className="p-2 rounded-md dark:hover:text-black hover:bg-slate-100">
