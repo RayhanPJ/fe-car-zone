@@ -14,9 +14,6 @@ const Header = () => {
             Manage your account settings and set e-mail preferences.
           </p>
         </div>
-        <div>
-          <ThemeToggler />
-        </div>
       </div>
       <hr />
     </div>
