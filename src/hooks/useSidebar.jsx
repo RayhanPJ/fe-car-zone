@@ -1,6 +1,6 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export const useSidebar = create((set) => ({
-  isMinimized: false,
-  toggle: () => set((state) => ({ isMinimized: !state.isMinimized }))
+  isMinimized: true,
+  toggle: () => set((state) => ({ isMinimized: !state.isMinimized })),
 }));
