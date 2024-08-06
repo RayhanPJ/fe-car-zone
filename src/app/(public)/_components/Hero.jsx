@@ -26,6 +26,8 @@ const Hero = () => {
             src={"/static/mercy-car.png"}
             width={500}
             height={500}
+            priority
+            style={{ width: "auto", height: "auto" }}
             className="mx-auto"
             alt="mercedez benz car"
           />

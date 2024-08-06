@@ -11,6 +11,8 @@ const OurServices = () => {
           alt="hero-car"
           width={400}
           height={400}
+          priority
+          style={{ width: "auto", height: "auto" }}
         />
       </div>
       <div className="flex flex-col justify-center w-full lg:w-1/2 max-w-screen-2xl mx-auto px-5 gap-6">
