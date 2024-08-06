@@ -43,7 +43,7 @@ const CarsPage = () => {
             </CardContent>
             <CardFooter className="space-x-2">
                <Button className="capitalize w-full">
-                  Beli sekarang
+                  Buy Now
                </Button>
                <Link 
                   className="btn btn-outline"
