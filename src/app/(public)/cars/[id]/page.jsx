@@ -14,6 +14,7 @@ import { BackButton } from "@/components/common/BackButton"
 import { Tooltip, TooltipTrigger, TooltipProvider, TooltipContent } from "@/components/ui/tooltip"
 import { carsData } from "@/constants/dummy"
 import formatCurrency from "@/lib/currencyFormat"
+import BuyBtn from "../_components/BuyBtn"
 
 export const metadata = {
    title: "Car Detail - Carzone best car dealer website"
@@ -40,6 +41,7 @@ const CarsDetailPage = ({ params }) => {
             src={car.image}
             width={500}
             height={500}
+            priority
             />
       </Card>
       <Card>
@@ -94,7 +96,7 @@ const CarsDetailPage = ({ params }) => {
             </article>
          </CardContent>
          <CardFooter>
-            <Button className="w-full">Buy now</Button>
+            <BuyBtn car_id={car.id} />
          </CardFooter>
       </Card>
    <BackButton className={"w-fit"} />
