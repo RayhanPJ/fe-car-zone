@@ -9,8 +9,20 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { CardHeader, CardTitle, CardContent } from "@/components/ui/card"
+import { usePayment } from "./usePayment"
+import { carsData } from "@/constants/dummy"
+import { useRouter } from "next/navigation"
 
 const CarDetail = () => {
+   const { payment } = usePayment()
+   const router = useRouter()
+   const car = carsData.find(item => item.id == payment.carID)
+
+   if(!car){
+      router.replace("/cars")
+      return null
+   }
+
   return (
    <>
       <Accordion type="single" collapsible  className="border px-3">
@@ -20,19 +32,19 @@ const CarDetail = () => {
             
             <figure className="w-full">
             <Image 
-               src={"https://imgd.aeplcdn.com/370x208/n/cw/ec/130591/fronx-exterior-right-front-three-quarter-109.jpeg"}
+               src={car.image}
                width={500}
                height={500}
                className="mx-auto w-full object-cover"
                />
             </figure>
             <CardHeader>
-               <CardTitle>Lorem ipsum dolor sit.</CardTitle>
+               <CardTitle>{car.brand} {car.model}</CardTitle>
             </CardHeader>
             <CardContent>
                <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-between mb-5">
-                  <span className="flex items-center gap-2 font-bold"><SUVIcon className={"size-7"} /> SUV </span>
-                  <span className="flex items-center gap-2 font-bold"><Tag className="size-5" /> Suzuki </span>
+                  <span className="flex items-center gap-2 font-bold"><SUVIcon className={"size-7"} /> {car.type} </span>
+                  <span className="flex items-center gap-2 font-bold"><Tag className="size-5" /> {car.brand} </span>
                </div>
             </CardContent>
 
@@ -40,7 +52,7 @@ const CarDetail = () => {
                <AccordionItem value="item-1">
                   <AccordionTrigger>Description</AccordionTrigger>
                   <AccordionContent>
-                  Lorem ipsum dolor sit amet consectetur, adipisicing elit. Est ea accusamus vitae excepturi quas mollitia atque ab minima, tempore cum odit qui totam incidunt fuga veniam? Sunt commodi rerum ipsa repellendus? Optio eveniet rem repudiandae rerum, possimus magnam, sapiente nihil totam, magni mollitia voluptate voluptates unde cupiditate veniam?
+                  {car.description}
                   </AccordionContent>
                </AccordionItem>
             </Accordion>

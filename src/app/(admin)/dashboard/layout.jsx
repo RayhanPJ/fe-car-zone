@@ -3,8 +3,7 @@ import Sidebar from './_components/sidebar';
 // import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const metadata = {
-  title: 'Next Shadcn Dashboard Starter',
-  description: 'Basic dashboard with Next.js and Shadcn'
+  title: 'Dashboard - carzone',
 };
 
 export default function DashboardLayout({

@@ -9,9 +9,13 @@ import {
 import { usePayment } from "./usePayment";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { carsData } from "@/constants/dummy";
+import formatCurrency from "@/lib/currencyFormat";
 
 const PaymentDetail = () => {
   const { payment } = usePayment();
+  const  car = carsData.find(item => item.id == payment.carID)
+
   return (
     <>
       <Accordion
@@ -30,7 +34,7 @@ const PaymentDetail = () => {
                 Total price
               </span>
               <span className="flex items-center gap-2 font-bold">
-                IDR. 120.000.000
+                {formatCurrency(car?.price)}
               </span>
             </div>
             <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-between mb-5">

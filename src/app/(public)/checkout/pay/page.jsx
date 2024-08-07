@@ -1,7 +1,6 @@
 
 import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card"
 import PayCard from "./_components/PayCard"
-import PaySuccess from "./_components/PaySuccess"
 
 export const metadata ={
    title : "Pay - Carzone"
