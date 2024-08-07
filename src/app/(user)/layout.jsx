@@ -9,7 +9,6 @@ const layout = ({ children }) => {
       <Navbar />
       <div className="min-h-svh p-10">
         <Header />
-
         <div className="mt-5">
           <div className="hidden lg:flex gap-5">
             <div className="w-60 min-h-[70vh]">
