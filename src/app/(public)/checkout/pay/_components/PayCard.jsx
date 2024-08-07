@@ -7,7 +7,7 @@ import { UploadIcon } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useLayoutEffect, useState } from "react"
 import { Copy, Check, Landmark } from "lucide-react"
 import formatCurrency from "@/lib/currencyFormat"
 
@@ -37,10 +37,6 @@ const PayCard = () => {
       setSelectedImage(URL.createObjectURL(file))
       setPaymentProof(URL.createObjectURL(file))
    }
-
-   useEffect(() => {
-      alert(JSON.stringify(payment))
-   }, [payment])
 
   return (
    <>
