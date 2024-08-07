@@ -9,7 +9,7 @@ const WhyUs = () => {
         <h2 className="text-3xl font-bold">Why Us?</h2>
         <p>We provide the best cars for you. Choose and buy only at CarZone.</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 pr-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader>
             <div className="flex items-center rounded-full w-fit p-2 bg-yellow-500 text-secondary">
