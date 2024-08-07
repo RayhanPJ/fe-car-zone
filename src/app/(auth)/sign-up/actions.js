@@ -19,7 +19,7 @@ export const signUp = async (formData) => {
       return { success: true }
    } catch (e) {
       if (e instanceof Error){
-         return { success: false, errors: e.response.data.error || "Sign up failed", server: true }
+         return { success: false, errors: e.response?.data?.error || "Sign up failed", server: true }
       }
       return { success: false, errors: e.errors, server: false }
    }
