@@ -9,7 +9,6 @@ const layout = ({ children }) => {
       <Navbar />
       <div className="p-10 main-container-lg">
         <Header />
-
         <div className="mt-5">
           <div className="flex flex-col md:flex-row gap-5">
             <div className="min-w-fit">
