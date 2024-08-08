@@ -16,6 +16,7 @@ const HeaderArticle = () => {
                width={500}
                height={500}
                priority
+               style={{ width: 'auto', height: 'auto' }}
                className="mx-auto"
                alt="mercedez benz car"
                />

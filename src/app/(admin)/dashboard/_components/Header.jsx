@@ -1,7 +1,8 @@
 import ThemeToggler from '@/components/common/ThemeToggler';
 import { cn } from '@/lib/utils';
 import { MobileSidebar } from './MobileSidebar';
-import { UserNav } from './UserNav';
+import { UserNav } from '@/components/common/UserNav';
+import Link from 'next/link';
 
 export default function Header() {
   return (
@@ -11,6 +12,7 @@ export default function Header() {
           <MobileSidebar />
         </div>
         <div className="flex items-center gap-2">
+          <Link href={"/"} className='btn btn-ghost'>Home</Link>
           <ThemeToggler />
           <UserNav />
         </div>

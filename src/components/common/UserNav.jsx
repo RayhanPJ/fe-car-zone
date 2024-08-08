@@ -15,9 +15,21 @@ import Link from 'next/link';
 import { LogOut } from 'lucide-react';
 import { signOut } from "@/lib/auth";
 import { signOutCookie } from '@/lib/server';
+import { useLayoutEffect } from 'react';
+import { isTokenExpired } from '@/lib/token';
+
 
 export function UserNav() {
-   const { auth } = useAuth()
+   const { auth, clear } = useAuth()
+
+   useLayoutEffect(() => {
+      if(auth?.token){
+         if(isTokenExpired(auth.token)){
+            clear()
+         }
+      }
+   }, [])
+
 
    return (
    <DropdownMenu>

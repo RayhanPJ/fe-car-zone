@@ -25,8 +25,6 @@ export const signIn = async (formData) => {
          }
       })
 
-      console.log(me.data)
-
       cookies().set({
          name: "token",
          value: token,
