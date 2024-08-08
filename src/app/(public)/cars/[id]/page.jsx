@@ -3,26 +3,27 @@ import Image from "next/image"
 import { Card, CardFooter, CardContent, CardHeader } from "@/components/ui/card"
 import { Tag, Car, Package } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import {
-   Accordion,
-   AccordionContent,
-   AccordionItem,
-   AccordionTrigger,
- } from "@/components/ui/accordion"
-import { Button } from "@/components/ui/button"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { BackButton } from "@/components/common/BackButton"
 import { Tooltip, TooltipTrigger, TooltipProvider, TooltipContent } from "@/components/ui/tooltip"
-import { carsData } from "@/constants/dummy"
 import formatCurrency from "@/lib/currencyFormat"
 import BuyBtn from "../_components/BuyBtn"
+import { API_BASE_URL } from "@/constants/variables"
 
-export const metadata = {
-   title: "Car Detail - Carzone best car dealer website"
+export const getCarByID = async(id) => {
+   const req = await fetch(API_BASE_URL + "/api/cms/cars/"+ id, { next  : { revalidate: 10 }})
+   const data = await req.json()
+   
+   if(!req.ok){
+      throw new Error('Failed to fetch data')
+   }
+
+  return data
 }
 
-const CarsDetailPage = ({ params }) => {
-   const car = carsData.find(item => item.id == params.id)
-   console.log(car)
+const CarsDetailPage = async ({ params }) => {
+   // const car = carsData.find(item => item.id == params.id)
+   const data = await getCarByID(params.id)
    return (
    <>
    <div className="bg-secondary">
@@ -38,26 +39,27 @@ const CarsDetailPage = ({ params }) => {
       <Card className="w-full overflow-hidden">
          <Image 
             className="w-full h-full object-cover object-center"
-            src={car.image}
+            src={data?.car.image_car}
             width={500}
             height={500}
             priority
             />
       </Card>
-      <Card>
+      <Card className="flex flex-col justify-between">
+         <div>
          <CardHeader>
-            <h1 className="text-2xl font-semibold capitalize">{car.brand} {car.model}</h1>
+            <h1 className="text-2xl font-semibold capitalize">{data?.car.name}</h1>
          </CardHeader>
          <CardContent>
             <article>
-               <p className="text-xl my-4">{formatCurrency(car.price)}</p>
+               <p className="text-xl my-2">{formatCurrency(data?.car.price)}</p>
 
-               <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-start gap-3">
+               <div className="flex flex-col gap-3 items-start my-3 justify-start">
                   <TooltipProvider>
                      <Tooltip>
                         <TooltipTrigger>
                            <span className="flex items-center gap-2 font-bold py-1 px-2 hover:bg-secondary rounded-md">
-                              <Car className={"size-7"} /> {car.type} </span>
+                              <Car className={"size-7"} />{data?.car.type.name || "unknow"} </span>
                         </TooltipTrigger>
                         <TooltipContent>
                            <p>Car Type</p>
@@ -66,7 +68,7 @@ const CarsDetailPage = ({ params }) => {
                      <Tooltip>
                         <TooltipTrigger>
                            <span className="flex items-center gap-2 font-bold py-1 px-2 hover:bg-secondary rounded-md">
-                              <Tag className="size-5" /> {car.brand} </span>
+                              <Tag className="size-5" /> {data?.car.brand.name} </span>
                         </TooltipTrigger>
                         <TooltipContent>
                            <p>Car Brand</p>
@@ -76,7 +78,11 @@ const CarsDetailPage = ({ params }) => {
                         <TooltipTrigger>
                            <span className="flex items-center gap-2 font-bold py-1 px-2 hover:bg-secondary rounded-md">
                               <Package className="size-5" /> 
-                              <Badge variant="success">New</Badge> </span>
+                              {!data?.car.is_second ?
+                                 <Badge variant="success">New</Badge> 
+                                 : <Badge variant="outline">Second</Badge> 
+                              }
+                              </span>
                         </TooltipTrigger>
                         <TooltipContent>
                            <p>Car condition</p>
@@ -84,25 +90,35 @@ const CarsDetailPage = ({ params }) => {
                      </Tooltip>
                   </TooltipProvider>
                </div>
-
-               <Accordion type="single" collapsible defaultValue="car-description">
-                  <AccordionItem value="car-description">
-                     <AccordionTrigger>Description</AccordionTrigger>
-                     <AccordionContent className="flex flex-col gap-2">
-                        {car.description}
-                     </AccordionContent>
-                  </AccordionItem>
-               </Accordion>
             </article>
          </CardContent>
+         </div>
          <CardFooter>
-            <BuyBtn car_id={car.id} />
+            <BuyBtn car_id={data?.car.id} />
          </CardFooter>
       </Card>
-   <BackButton className={"w-fit"} />
+      <div className="col-span-2">
+         <article>
+            <h1 className="text-xl font-bold my-10">Description</h1>
+
+            <ScrollArea className="resize-y p-3 border min-h-fit max-h-[300px] w-full overflow-y-auto">
+            {data?.car.description}
+            </ScrollArea>
+         </article>
+
+         <BackButton className={"w-fit mt-10"} />
+      </div>
    </div>
    </>
   )
+}
+
+export const generateMetadata = async ({ params }) => {
+   const data = await getCarByID(params.id)
+
+   return {
+      title: `"${data?.car.name}" detail - carzone`
+   }
 }
 
 export default CarsDetailPage

@@ -12,6 +12,7 @@ import useSWR from "swr"
 import { CarCardSkeleton } from "@/components/common/Skeletons"
 import formatCurrency from "@/lib/currencyFormat"
 import { useSearchParams } from "next/navigation"
+import { Badge } from "@/components/ui/badge"
  
 const CarLists = () => {
    const { data, isLoading, error} = useSWR("/api/cms/cars", fetcher)
@@ -36,27 +37,29 @@ const CarLists = () => {
          item.brand.name.toLowerCase().includes(params.get("keyword")) ||
          item.type.name.toLowerCase().includes(params.get("keyword"))
          : item
-      )).map((item, i) => (
-         <Card key={item.ID} className="shadow-md group">
+      )).map((item) => (
+         <Card key={item.id} className="shadow-md group">
             <Image 
                src={item.image_car}
                width={300}
                height={300}
-
+               priority
+               style={{ height: 'auto', width: 'auto' }}
                />
             <CardContent className="mt-5">
-               <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.brand.name} {item.name}</CardTitle>
+               <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
                <p className="my-2 text-sm md:text-lg">{formatCurrency(item.price)}</p>
-               <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-between">
-                  <span className="flex capitalize items-center gap-2 font-bold"><SUVIcon className={"size-7"} /> {item.type.name} </span>
-                  <span className="flex capitalize items-center gap-2 font-bold"><Tag className="size-5" /> {item.brand.name} </span>
+               <div className="flex flex-col items-start my-3 gap-2 justify-between">
+                  <p className="flex capitalize items-center gap-2 font-bold"><SUVIcon className={"size-7"} />{item.type.name} </p>
+                  <p className="flex capitalize items-center gap-2 font-bold"><Tag className="size-5" /> {item.brand.name} </p>
+                  <p className="flex capitalize items-center gap-2 font-bold"> {item.is_second ? <Badge variant={'outline'}>Second</Badge> : <Badge variant="success">New</Badge> } </p>
                </div>
             </CardContent>
             <CardFooter className="space-x-2">
-               <BuyBtn car_id={item.ID} />
+               <BuyBtn car_id={item.id} />
                <Link 
                   className="btn btn-outline"
-                  href={`/cars/${item.ID}`}>
+                  href={`/cars/${item.id}`}>
                   Detail
                </Link>
             </CardFooter>
