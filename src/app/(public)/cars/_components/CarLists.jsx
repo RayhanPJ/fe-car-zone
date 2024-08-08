@@ -42,7 +42,8 @@ const CarLists = () => {
                src={item.image_car}
                width={300}
                height={300}
-
+               priority
+               style={{ height: 'auto', width: 'auto' }}
                />
             <CardContent className="mt-5">
                <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.brand.name} {item.name}</CardTitle>
