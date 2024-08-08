@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Table,
   TableBody,
@@ -10,63 +11,43 @@ import {
 import { Pencil } from "lucide-react";
 import Link from "next/link";
 import DeleteUser from "./DeleteUser";
+import { useEffect, useState } from "react";
+import { fetcher } from "@/api";
 
 const DataTable = () => {
-  const data = [
-    {
-      id: 4,
-      username: "user1",
-      phone_number: "",
-      address: "",
-      email: "user1@gmail.com",
-      role: "user",
-    },
-    {
-      id: 3,
-      username: "admin1",
-      phone_number: "",
-      address: "",
-      email: "admin1@gmail.com",
-      role: "admin",
-    },
-    {
-      id: 5,
-      username: "rifki",
-      phone_number: "",
-      address: "",
-      email: "rifki@test.com",
-      role: "user",
-    },
-    {
-      id: 15,
-      username: "test1",
-      phone_number: "",
-      address: "",
-      email: "test@tes.com",
-      role: "user",
-    },
-    {
-      id: 16,
-      username: "test2",
-      phone_number: "",
-      address: "",
-      email: "test2@tes.com",
-      role: "user",
-    },
-    {
-      id: 12,
-      username: "tester",
-      phone_number: "088726837246",
-      address: "jalan jalan sore",
-      email: "teste@gmail.com",
-      role: "user",
-    },
-  ];
+  const [data, setData] = useState();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetcher("/api/cms/users");
+        console.log(response);
+        if (response && response.data && Array.isArray(response.data)) {
+          setData(response.data);
+        } else {
+          console.error("Unexpected response format:", response);
+        }
+      } catch (error) {
+        console.error("Failed to fetch data", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log("Data nya apa sih:", data);
 
   return (
     <>
       <Table className="w-full">
-        <TableCaption>List of transaction data</TableCaption>
+        <TableCaption>List of users</TableCaption>
         <TableHeader>
           <TableRow className="text-center">
             <TableCell>No</TableCell>
@@ -86,11 +67,11 @@ const DataTable = () => {
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone_number}</TableCell>
               <TableCell>{user.address}</TableCell>
-              <TableCell>{user.role}</TableCell>
+              <TableCell>{user.role.role_name}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2 justify-center">
                   <Link
-                    href={`/dashboard/cars/${user.id}`}
+                    href={`/dashboard/users/${user.id}`}
                     className="btn btn-success"
                   >
                     <Pencil className="size-4" />
