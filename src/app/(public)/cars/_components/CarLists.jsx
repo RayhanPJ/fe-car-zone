@@ -36,8 +36,8 @@ const CarLists = () => {
          item.brand.name.toLowerCase().includes(params.get("keyword")) ||
          item.type.name.toLowerCase().includes(params.get("keyword"))
          : item
-      )).map((item, i) => (
-         <Card key={item.ID} className="shadow-md group">
+      )).map((item) => (
+         <Card key={item.id} className="shadow-md group">
             <Image 
                src={item.image_car}
                width={300}
@@ -54,10 +54,10 @@ const CarLists = () => {
                </div>
             </CardContent>
             <CardFooter className="space-x-2">
-               <BuyBtn car_id={item.ID} />
+               <BuyBtn car_id={item.id} />
                <Link 
                   className="btn btn-outline"
-                  href={`/cars/${item.ID}`}>
+                  href={`/cars/${item.id}`}>
                   Detail
                </Link>
             </CardFooter>
