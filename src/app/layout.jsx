@@ -6,6 +6,7 @@ import ThemeProvider from "@/components/common/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 import ScrollTop from "@/components/common/ScrollTop";
 import AuthProvider from "@/components/common/AuthProvider";
+import { Suspense } from "react";
 
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
@@ -19,12 +20,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${poppins.className} antialiased overflow-x-hidden`}>
         <ThemeProvider>
+          <Suspense>
           <ProgressBarProvider>
             {children}
             <ScrollTop />
             <AuthProvider />
             <Toaster duration={3000} />
           </ProgressBarProvider>
+          </Suspense>
         </ThemeProvider>
       </body>
     </html>
