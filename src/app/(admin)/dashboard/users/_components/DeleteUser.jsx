@@ -14,15 +14,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import API from "@/api/index.js";
 
-const DeleteUser = () => {
+const DeleteUser = ({ userId, onDeleteSuccess }) => {
   const { toast } = useToast();
 
-  const handleClick = () => {
-    toast({
-      title: "Car data deleted!",
-      description: `Car "Avanza" deleted succesfuly `,
-    });
+  const handleDelete = async () => {
+    try {
+      await API.delete(`/api/cms/users/${userId}`);
+      toast({
+        title: "User data deleted!",
+        description: `User deleted successfully.`,
+      });
+      onDeleteSuccess(userId);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: `Failed to delete user. ${error.message}`,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -37,14 +48,14 @@ const DeleteUser = () => {
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the car
-              data.
+              This action cannot be undone. This will permanently delete the
+              user data.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              onClick={handleClick}
+              onClick={handleDelete}
               className="btn btn-destructive hover:bg-destructive/80"
             >
               Delete

@@ -8,8 +8,6 @@ import {
   TableRow,
   TableCaption,
 } from "@/components/ui/table";
-import { Pencil } from "lucide-react";
-import Link from "next/link";
 import DeleteUser from "./DeleteUser";
 import { useEffect, useState } from "react";
 import { fetcher } from "@/api";
@@ -38,11 +36,13 @@ const DataTable = () => {
     fetchData();
   }, []);
 
+  const handleDeleteSuccess = (userId) => {
+    setData((prevData) => prevData.filter((user) => user.id !== userId));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
-
-  console.log("Data nya apa sih:", data);
 
   return (
     <>
@@ -70,13 +70,10 @@ const DataTable = () => {
               <TableCell>{user.role}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2 justify-center">
-                  <Link
-                    href={`/dashboard/users/${user.id}`}
-                    className="btn btn-success"
-                  >
-                    <Pencil className="size-4" />
-                  </Link>
-                  <DeleteUser />
+                  <DeleteUser
+                    userId={user.id}
+                    onDeleteSuccess={handleDeleteSuccess}
+                  />
                 </div>
               </TableCell>
             </TableRow>

@@ -31,8 +31,8 @@ const formSchema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password of at least 6 characters"),
   role_id: z.coerce.number({ required_error: "Role is required" }),
-  phone_number: z.string().optional(),
-  address: z.string().optional(),
+  phone_number: z.string(),
+  address: z.string(),
 });
 
 const AddForm = () => {
@@ -52,7 +52,7 @@ const AddForm = () => {
 
   async function onSubmit(values) {
     try {
-      console.log("Data to submit:", values);
+      console.log(values);
       const response = await API.post("/api/cms/users", values);
 
       if (!response.status === 201) {
