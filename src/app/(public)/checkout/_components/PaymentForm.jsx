@@ -24,15 +24,13 @@ const banks = [
 ];
 
 const PaymentForm = () => {
-  const { payment, setPaymentProvider, setNoRek, setTotalAmount } =
+  const { payment, setPaymentProvider, setNoRek } =
     usePayment();
 
   const handleChange = (e) => {
     const id = e.target.value;
-    console.log(carsData.filter(c => c.id === payment.carID)[0].price)
     setPaymentProvider(banks.find((item) => item.id == id).name);
     setNoRek(banks.find((item) => item.id == id).rek);
-    setTotalAmount(carsData.filter(c => c.id === payment.carID)[0].price);
   };
 
   return (

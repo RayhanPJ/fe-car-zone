@@ -19,5 +19,6 @@ export const usePayment = create((set) => ({
    setNoRek: (value) =>
       set((state) => ({ payment: { ...state.payment, noRek: value } })),
    setPaymentProof: (value) =>
-      set((state) => ({ payment: { ...state.payment, paymentProof: value } }))
+      set((state) => ({ payment: { ...state.payment, paymentProof: value } })),
+   clear: () => set({ payment: initialPayment }) 
 }))

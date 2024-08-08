@@ -7,22 +7,36 @@ import { UploadIcon } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import { useLayoutEffect, useState } from "react"
+import { useEffect, useLayoutEffect } from "react"
 import { Copy, Check, Landmark } from "lucide-react"
 import formatCurrency from "@/lib/currencyFormat"
+import { useForm } from "react-hook-form"
+import API from "@/api"
+import useImageUploader from "@/hooks/useImageUploader"
+import { Progress } from "@/components/ui/progress"
+import Swal from "sweetalert2"
 
 
 const PayCard = () => {
    const { payment, setPaymentProof } = usePayment()
    const { copiedText, copy } = useCopyToClipboard()
    const router = useRouter()
-   const [selectedImage, setSelectedImage] = useState(null)
+   const { inputFileRef, handleFileInputChange, progressPercent, imgUrl, error } = useImageUploader()
 
    useLayoutEffect(() => {
       if(!payment.noRek || !payment.paymentProvider || !payment.totalAmount){
          router.push("/cars")
       }
+
+      // console.log(payment)
    }, [payment])
+
+
+   useEffect(() => {
+      if(imgUrl){
+         setPaymentProof(imgUrl)
+      }
+   }, [progressPercent, imgUrl])
    
    if(!payment.noRek || !payment.paymentProvider || !payment.totalAmount){
       return <>
@@ -32,10 +46,44 @@ const PayCard = () => {
       </>
    }
 
-   const handleImage = (e) => {
-      const file = e.target.files[0]
-      setSelectedImage(URL.createObjectURL(file))
-      setPaymentProof(URL.createObjectURL(file))
+   const { handleSubmit, formState: { isSubmitting } } = useForm()
+
+   const onSubmit = () => {
+      API.post("/api/cms/orders", {
+         car_id: payment.carID,
+         status: false,
+         total_price: payment.totalAmount,
+         order_image: payment.paymentProof
+      }).then(order => {
+         const orderId = order.data?.data.id
+         if (!orderId) {
+            throw new Error("Order ID is not available");
+         }
+         API.post("/api/cms/transactions", {
+            order_id: orderId,
+            payment_provider: payment.paymentProvider,
+            no_rek: payment.noRek,
+            amount: payment.totalAmount,
+         }).then(tsc => console.log(tsc)).catch(err => {console.error(err)})
+
+         Swal.fire({
+            title: "Order placed!",
+            text: "Please wait until your order is confirmed by admin",
+            icon: "success",
+            confirmButtonText: "OKE"
+         }).then((result) => {
+            if (result.isConfirmed) {
+              router.replace("/order-list")
+            }
+          })
+      }).catch(err => {
+         Swal.fire({
+            title: "Order failed!",
+            text: "Your transaction is failed, please try again!",
+            icon: "error"
+         })
+         console.error(err)
+      })
    }
 
   return (
@@ -69,31 +117,41 @@ const PayCard = () => {
             </div>
          </div>
       </div>
-      <form action="" onSubmit={e => e.preventDefault()}>
+      <form action="" onSubmit={handleSubmit(onSubmit)}>
          <div className="my-3">
             <span>Upload transfer proof</span>
             <label htmlFor="proof-payment" className="mt-4 grid gap-4 cursor-pointer">
                <div className="flex py-10 items-center justify-center rounded-md border-2 border-dashed border-muted transition-colors hover:border-primary">
                   <div className="text-center">
-                  {!selectedImage 
+                  {(!imgUrl) 
                      ?<>
                         <UploadIcon className="mx-auto h-12 w-12 text-muted-foreground" />
                         <div className="mt-4 font-medium text-muted-foreground">Click to select image</div>
                      </>
                      : <>
                         <div className="w-full max-w-xl h-full max-h-max">
-                           <img src={selectedImage} width={300} height={500} />
+                           <img src={imgUrl} width={300} height={500} />
                            <div className="mt-4 font-medium text-muted-foreground">Click to change</div>
                         </div>
                      </>
                   }
-                  <Input onChange={handleImage} id="proof-payment" type="file" accept="image/*" className="sr-only" />
+                   {(progressPercent > 0 && progressPercent != 100) && <Progress  value={progressPercent}/> }
+                  <Input 
+                     // {...form.register("image_car")} 
+                     id="proof-payment"
+                     ref={inputFileRef} 
+                     onChange={handleFileInputChange} 
+                     type="file" accept="image/*" className="sr-only" />
                   </div>
                </div>
             </label>
          </div>
 
-         <Button className="my-10">Send payment confirmation</Button>
+         {payment.paymentProof && 
+            <Button className="my-10"
+               disabled={isSubmitting}
+               >{isSubmitting ? "Loading" : "Send payment confirmation"}</Button>
+         }
       </form>
    </>
   )
