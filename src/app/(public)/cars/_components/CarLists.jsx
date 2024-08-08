@@ -46,7 +46,7 @@ const CarLists = () => {
                style={{ height: 'auto', width: 'auto' }}
                />
             <CardContent className="mt-5">
-               <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.brand.name} {item.name}</CardTitle>
+               <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
                <p className="my-2 text-sm md:text-lg">{formatCurrency(item.price)}</p>
                <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-between">
                   <span className="flex capitalize items-center gap-2 font-bold"><SUVIcon className={"size-7"} /> {item.type.name} </span>
