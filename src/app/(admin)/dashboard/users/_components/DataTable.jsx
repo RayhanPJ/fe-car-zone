@@ -22,7 +22,7 @@ const DataTable = () => {
     const fetchData = async () => {
       try {
         const response = await fetcher("/api/cms/users");
-        console.log(response);
+        console.log(response.data);
         if (response && response.data && Array.isArray(response.data)) {
           setData(response.data);
         } else {
@@ -67,7 +67,7 @@ const DataTable = () => {
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone_number}</TableCell>
               <TableCell>{user.address}</TableCell>
-              <TableCell>{user.role.role_name}</TableCell>
+              <TableCell>{user.role}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2 justify-center">
                   <Link
