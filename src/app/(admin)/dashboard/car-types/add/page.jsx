@@ -1,6 +1,5 @@
 import BreadCrumb from "@/components/common/BreadCrumb";
 import AddForm from "./_components/AddForm";
-import { BackButton } from "@/components/common/BackButton";
 import { Card } from "@/components/ui/card";
 
 export const metadata = {
@@ -12,7 +11,7 @@ const AddCarsPage = () => {
     <>
       <div className="flex flex-col md:flex-row items-center justify-between gap-2 py-10 px-3">
         <div className="">
-          <h1 className="text-2xl font-bold">Add New User Data</h1>
+          <h1 className="text-2xl font-bold">Add New Car Type Data</h1>
           <BreadCrumb />
         </div>
       </div>
