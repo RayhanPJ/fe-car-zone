@@ -8,7 +8,7 @@ import {
   TableRow,
   TableCaption,
 } from "@/components/ui/table";
-import DeleteUser from "./DeleteUser";
+// import DeleteUser from "./DeleteUser";
 import { useEffect, useState } from "react";
 import { fetcher } from "@/api";
 
@@ -36,9 +36,9 @@ const DataTable = () => {
     fetchData();
   }, []);
 
-  const handleDeleteSuccess = (userId) => {
-    setData((prevData) => prevData.filter((user) => user.id !== userId));
-  };
+  // const handleDeleteSuccess = (adminId) => {
+  //   setData((prevData) => prevData.filter((admin) => admin.id !== adminId));
+  // };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -47,7 +47,7 @@ const DataTable = () => {
   return (
     <>
       <Table className="w-full">
-        <TableCaption>List of users</TableCaption>
+        <TableCaption>List of admins</TableCaption>
         <TableHeader>
           <TableRow className="text-center">
             <TableCell>No</TableCell>
@@ -56,26 +56,26 @@ const DataTable = () => {
             <TableCell>Phone Number</TableCell>
             <TableCell>Address</TableCell>
             <TableCell>Role</TableCell>
-            <TableCell>Action</TableCell>
+            {/* <TableCell>Action</TableCell> */}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.filter(i => i.role == 'user').map((user, i) => (
-            <TableRow className="text-center" key={user.id}>
+          {data?.filter(i => i.role == 'admin').map((admin, i) => (
+            <TableRow className="text-center" key={admin.id}>
               <TableCell>{i + 1}</TableCell>
-              <TableCell>{user.username}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phone_number}</TableCell>
-              <TableCell>{user.address}</TableCell>
-              <TableCell>{user.role}</TableCell>
-              <TableCell>
+              <TableCell>{admin.username}</TableCell>
+              <TableCell>{admin.email}</TableCell>
+              <TableCell>{admin.phone_number}</TableCell>
+              <TableCell>{admin.address}</TableCell>
+              <TableCell>{admin.role}</TableCell>
+              {/* <TableCell>
                 <div className="flex items-center gap-2 justify-center">
                   <DeleteUser
-                    userId={user.id}
+                    userId={admin.id}
                     onDeleteSuccess={handleDeleteSuccess}
                   />
                 </div>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>
