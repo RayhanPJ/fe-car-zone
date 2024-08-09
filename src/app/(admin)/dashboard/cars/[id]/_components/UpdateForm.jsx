@@ -82,9 +82,6 @@ const UpdateForm = ({ carID }) => {
   useEffect(() => {
     if (data) {
       // Reset form with new data
-      if(data?.sold){
-        router.replace("/dashboard/cars")
-      }
       form.reset({
         image_car: data.car.image_car || "",
         name: data.car.name || "",
@@ -123,6 +120,9 @@ const UpdateForm = ({ carID }) => {
   }
 
   if (isLoading) return <Spinner />;
+  if(data.car.sold && !searchParams.get("detail")){
+    router.replace("/dashboard/cars")
+  }
   return (
     <>
       <form
