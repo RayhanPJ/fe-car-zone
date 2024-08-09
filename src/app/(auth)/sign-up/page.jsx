@@ -1,7 +1,7 @@
 
 import SignUpForm from "./_components/SignUpForm"
 import Image from "next/image"
-import ThemeToggler from "@/components/common/ThemeToggler"
+// import ThemeToggler from "@/components/common/ThemeToggler"
 
 export const metadata = {
   title: "Sign Up - Carzone"
@@ -10,7 +10,7 @@ export const metadata = {
 export default function SignInPage() {
   return (
     <div className="grid min-h-screen w-full grid-cols-1 lg:grid-cols-2">
-      <ThemeToggler className="fixed top-5 right-5" />
+      {/* <ThemeToggler className="fixed top-5 right-5" /> */}
       <div className="relative hidden lg:block">
         <figure className="w-full h-full"> 
           <Image 

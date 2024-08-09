@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation"
 import { useAuth } from "@/hooks/useAuth" 
 
 const SignInForm = () => {
-  const { setToken, setUsername, setEmail, setRole } = useAuth()
+  const { setToken, setUsername, setEmail, setRole, setUserId } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
   const [serverError, setServerError] = useState({})
@@ -47,6 +47,7 @@ const SignInForm = () => {
         setUsername(data.username)
         setEmail(data.email)
         setRole(data.role.role_name)
+        setUserId(data.id)
 
         toast({
           variant: "success",
