@@ -12,13 +12,16 @@ import { CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { usePayment } from "./usePayment"
 import { carsData } from "@/constants/dummy"
 import { useRouter } from "next/navigation"
+import useSWR from "swr"
+import { API_BASE_URL } from "@/constants/variables"
+import { fetcher } from "@/api"
 
 const CarDetail = () => {
    const { payment } = usePayment()
    const router = useRouter()
-   const car = carsData.find(item => item.id == payment.carID)
-
-   if(!car){
+   const { data, error } = useSWR(API_BASE_URL + "/api/cms/cars/" + payment.carID, fetcher)
+   // console.log(data);
+   if(error){
       router.replace("/cars")
       return null
    }
@@ -32,19 +35,19 @@ const CarDetail = () => {
             
             <figure className="w-full">
             <Image 
-               src={car.image}
+               src={data?.car.image_car}
                width={500}
                height={500}
                className="mx-auto w-full object-cover"
                />
             </figure>
             <CardHeader>
-               <CardTitle>{car.brand} {car.model}</CardTitle>
+               <CardTitle>{data?.car.name}</CardTitle>
             </CardHeader>
             <CardContent>
                <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-between mb-5">
-                  <span className="flex items-center gap-2 font-bold"><SUVIcon className={"size-7"} /> {car.type} </span>
-                  <span className="flex items-center gap-2 font-bold"><Tag className="size-5" /> {car.brand} </span>
+                  <span className="flex items-center gap-2 font-bold"><SUVIcon className={"size-7"} /> {data?.car.type.name} </span>
+                  <span className="flex items-center gap-2 font-bold"><Tag className="size-5" /> {data?.car.brand.name} </span>
                </div>
             </CardContent>
 
@@ -52,7 +55,7 @@ const CarDetail = () => {
                <AccordionItem value="item-1">
                   <AccordionTrigger>Description</AccordionTrigger>
                   <AccordionContent>
-                  {car.description}
+                  {data?.car.description}
                   </AccordionContent>
                </AccordionItem>
             </Accordion>

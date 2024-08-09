@@ -16,116 +16,51 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import React from "react";
-import data from "@/lib/dataDummy";
+import data from "@/constants/dataDummy";
 import formatCurrency from "@/lib/currencyFormat";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
 
 const OrderListPage = () => {
-  const { id, product } = data[0];
   return (
     <section className="flex flex-col gap-6 w-full min-h-100%">
       <h1 className="text-3xl font-bold">ORDER LIST</h1>
-      <Card className="mr-5">
-        <div className="grid grid-cols-8">
-          <div className="pt-6 pl-6 col-span-1 flex justify-center items-center">
-            <Image
-              className="rounded-xl"
-              src="/logo.png"
-              alt="car"
-              width={100}
-              height={100}
-            />
-          </div>
-          <CardHeader className="col-span-3 xs:col-span-4 sm:col-span-5">
-            <CardTitle>
-              {product.brand} {product.model}
-            </CardTitle>
-            <CardDescription>
-              {product.variant} | {product.color}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="col-span-4 xs:col-span-3 sm:col-span-2">
-            <div className="pt-6 flex flex-col items-center justify-center h-full">
-              <p>Total Shipping</p>
-              <p className="font-bold">{formatCurrency(product.total)}</p>
+      {data.map(item => (
+        <Card className="mr-5" key={item.id}>
+          <div className="grid grid-cols-8">
+            <div className="pt-6 pl-6 col-span-1 flex justify-center items-center">
+              <Image
+                className="rounded-xl"
+                src="/logo.png"
+                alt="car"
+                width={100}
+                height={100}
+              />
             </div>
-          </CardContent>
-        </div>
-        <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/invoice/${id}`}>
-            <Button>Detail Transaction</Button>
-          </Link>
-        </CardFooter>
-      </Card>
-      <Card className="mr-5">
-        <div className="grid grid-cols-8">
-          <div className="pt-6 pl-6 col-span-1 flex justify-center items-center">
-            <Image
-              className="rounded-xl"
-              src="/logo.png"
-              alt="car"
-              width={100}
-              height={100}
-            />
-          </div>
-          <CardHeader className="col-span-3 xs:col-span-4 sm:col-span-5">
-            <CardTitle>
-              {product.brand} {product.model}
-            </CardTitle>
-            <CardDescription>
-              {product.variant} | {product.color}
-            </CardDescription>
-          </CardHeader>
+            <CardHeader className="col-span-3 xs:col-span-4 sm:col-span-5">
+              <CardTitle>
+                {item.brand} {item.model}
+              </CardTitle>
+              <CardDescription>
+                {item.product.variant} | {item.product.color}
+              </CardDescription>
+            </CardHeader>
 
-          <CardContent className="col-span-4 xs:col-span-3 sm:col-span-2">
-            <div className="pt-6 flex flex-col items-center justify-center h-full">
-              <p>Total Shipping</p>
-              <p className="font-bold">{formatCurrency(product.total)}</p>
-            </div>
-          </CardContent>
-        </div>
-        <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/invoice/${id}`}>
-            <Button>Detail Transaction</Button>
-          </Link>
-        </CardFooter>
-      </Card>
-      <Card className="mr-5">
-        <div className="grid grid-cols-8">
-          <div className="pt-6 pl-6 col-span-1 flex justify-center items-center">
-            <Image
-              className="rounded-xl"
-              src="/logo.png"
-              alt="car"
-              width={100}
-              height={100}
-            />
+            <CardContent className="col-span-4 xs:col-span-3 sm:col-span-2">
+              <div className="pt-6 flex flex-col items-center justify-center h-full">
+                <p>Total Shipping</p>
+                <p className="font-bold">{formatCurrency(item.total)}</p>
+              </div>
+            </CardContent>
           </div>
-          <CardHeader className="col-span-3 xs:col-span-4 sm:col-span-5">
-            <CardTitle>
-              {product.brand} {product.model}
-            </CardTitle>
-            <CardDescription>
-              {product.variant} | {product.color}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="col-span-4 xs:col-span-3 sm:col-span-2">
-            <div className="pt-6 flex flex-col items-center justify-center h-full">
-              <p>Total Shipping</p>
-              <p className="font-bold">{formatCurrency(product.total)}</p>
-            </div>
-          </CardContent>
-        </div>
-        <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
-          <Link href={`/invoice/${id}`}>
-            <Button>Detail Transaction</Button>
-          </Link>
-        </CardFooter>
-      </Card>
+          <CardFooter className="pt-5 flex flex-row justify-end gap-3 w-full">
+            <Link href={`/invoice/${item.id}`}>
+              <Button>Detail Transaction</Button>
+            </Link>
+          </CardFooter>
+        </Card>
+      ))}
 
       {/* Pagination */}
       <Pagination>

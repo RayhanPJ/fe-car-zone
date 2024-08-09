@@ -9,13 +9,22 @@ import {
 import { usePayment } from "./usePayment";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
-import { carsData } from "@/constants/dummy";
 import formatCurrency from "@/lib/currencyFormat";
+import { fetcher } from "@/api";
+import { API_BASE_URL } from "@/constants/variables";
+import useSWR from "swr";
+import { useEffect } from "react";
 
 const PaymentDetail = () => {
-  const { payment } = usePayment();
-  const  car = carsData.find(item => item.id == payment.carID)
+  const { payment, setTotalAmount } = usePayment();
+  const { data, error, isLoading } = useSWR(API_BASE_URL + "/api/cms/cars/" + payment.carID, fetcher)
 
+
+  useEffect(() => {    
+    if(!isLoading && !error){
+      setTotalAmount(data?.car.price)
+    }
+  }, [isLoading, error])
   return (
     <>
       <Accordion
@@ -34,7 +43,10 @@ const PaymentDetail = () => {
                 Total price
               </span>
               <span className="flex items-center gap-2 font-bold">
-                {formatCurrency(car?.price)}
+                {isLoading 
+                ? "Loading..."
+                : formatCurrency(data?.car?.price)
+                }
               </span>
             </div>
             <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-between mb-5">

@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./_components/Header";
-import Link from "next/link";
 import Navbar from "@/components/common/Navbar";
+import UserMenu from "./_components/UserMenu";
 
 const layout = ({ children }) => {
   return (
@@ -12,28 +12,7 @@ const layout = ({ children }) => {
         <div className="mt-5">
           <div className="flex flex-col md:flex-row gap-5">
             <div className="min-w-fit">
-              <ul className="gap-2 flex flex-col text-base font-medium">
-                <Link href="/profile">
-                  <li className="p-2 rounded-md dark:hover:text-black hover:bg-slate-100">
-                    Profile
-                  </li>
-                </Link>
-                <Link href="/change-password">
-                  <li className="p-2 rounded-md dark:hover:text-black hover:bg-slate-100">
-                    Change Password
-                  </li>
-                </Link>
-                <Link href="/order-list">
-                  <li className="p-2 rounded-md dark:hover:text-black hover:bg-slate-100">
-                    Order List
-                  </li>
-                </Link>
-                <Link href="/">
-                  <li className="p-2 rounded-md mt-10 dark:hover:text-black hover:bg-slate-100">
-                    Back
-                  </li>
-                </Link>
-              </ul>
+              <UserMenu />
             </div>
             <main className="w-full main-container-lg">{children}</main>
           </div>

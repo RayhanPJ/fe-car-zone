@@ -15,9 +15,22 @@ import Link from 'next/link';
 import { LogOut } from 'lucide-react';
 import { signOut } from "@/lib/auth";
 import { signOutCookie } from '@/lib/server';
+import { useEffect } from 'react';
+import { isTokenExpired } from '@/lib/token';
+
 
 export function UserNav() {
-   const { auth } = useAuth()
+   const { auth, clear } = useAuth()
+
+   useEffect(() => {
+      if(auth?.token){
+         if(isTokenExpired(auth.token)){
+            alert("Session expired, sign in to access your account again")
+            clear()
+         }
+      }
+   }, [])
+
 
    return (
    <DropdownMenu>

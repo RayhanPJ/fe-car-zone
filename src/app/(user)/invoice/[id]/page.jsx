@@ -1,5 +1,5 @@
 import React from "react";
-import data from "@/lib/dataDummy";
+import data from "@/constants/dataDummy";
 import HeadInvoice from "./_components/HeadInvoice";
 import InfoInvoice from "./_components/InfoInvoice";
 import TableInvoice from "./_components/TableInvoice";

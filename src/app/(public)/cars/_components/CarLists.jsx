@@ -7,34 +7,59 @@ import { SUVIcon } from "@/components/icons"
 import { Tag } from "lucide-react"
 import Link from "next/link"
 import BuyBtn from "./BuyBtn"
-import { carsData } from "@/constants/dummy"
+import { fetcher } from "@/api"
+import useSWR from "swr"
+import { CarCardSkeleton } from "@/components/common/Skeletons"
+import formatCurrency from "@/lib/currencyFormat"
+import { useSearchParams } from "next/navigation"
+import { Badge } from "@/components/ui/badge"
  
 const CarLists = () => {
+   const { data, isLoading, error} = useSWR("/api/cms/cars", fetcher)
+   const params = useSearchParams()
 
+   if (error) return <div className="p-7 bg-destructive text-destructive-foreground rounded-xl">{error}</div>
+   if(isLoading) {
+      return <>
+       <GridContainer className={"my-10 mt-[300px] md:mt-[150px] main-container"}>
+         {Array(4).fill(0).map((_, i) => (
+            <CarCardSkeleton key={i}/>  
+         ))}
+       </GridContainer>
+      </>
+   }
   return (
    <>
    <GridContainer className={"my-10 mt-[300px] md:mt-[150px] main-container"}>
-      {carsData.map((item, i) => (
-         <Card key={i} className="shadow-md">
+      {data?.cars.filter(item => (
+         params.get("keyword") ?
+         item.name.toLowerCase().includes(params.get("keyword")) ||
+         item.brand.name.toLowerCase().includes(params.get("keyword")) ||
+         item.type.name.toLowerCase().includes(params.get("keyword"))
+         : item
+      )).map((item) => (
+         <Card key={item.id} className="shadow-md group">
             <Image 
-               src={item.image}
+               src={item.image_car}
                width={300}
                height={300}
-
+               priority
+               style={{ height: 'auto', width: 'auto' }}
                />
             <CardContent className="mt-5">
-               <CardTitle className="text-lg md:text-xl">{item.brand} {item.model}</CardTitle>
-               <p className="my-2 text-sm md:text-lg">IDR. {item.price}</p>
-               <div className="flex flex-col md:flex-row items-start my-3 md:items-center justify-between">
-                  <span className="flex items-center gap-2 font-bold"><SUVIcon className={"size-7"} /> {item.type} </span>
-                  <span className="flex items-center gap-2 font-bold"><Tag className="size-5" /> {item.brand} </span>
+               <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
+               <p className="my-2 text-sm md:text-lg">{formatCurrency(item.price)}</p>
+               <div className="flex flex-col items-start my-3 gap-2 justify-between">
+                  <p className="flex capitalize items-center gap-2 font-bold"><SUVIcon className={"size-7"} />{item.type.name} </p>
+                  <p className="flex capitalize items-center gap-2 font-bold"><Tag className="size-5" /> {item.brand.name} </p>
+                  <p className="flex capitalize items-center gap-2 font-bold"> {item.is_second ? <Badge variant={'outline'}>Second</Badge> : <Badge variant="success">New</Badge> } </p>
                </div>
             </CardContent>
             <CardFooter className="space-x-2">
                <BuyBtn car_id={item.id} />
                <Link 
                   className="btn btn-outline"
-                  href={`/cars/${i}`}>
+                  href={`/cars/${item.id}`}>
                   Detail
                </Link>
             </CardFooter>
