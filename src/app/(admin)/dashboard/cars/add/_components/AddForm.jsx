@@ -29,6 +29,7 @@ const formSchema = z.object({
    name: z.string({ required_error: "Model is required" }),
    price: z.coerce.number().min(0, { message: "Price is required" }),
    brand_id: z.coerce.number(),
+   sold: z.coerce.boolean(),
    is_second: z.preprocess(
     (val) => {
       if (val === "true") return true;
@@ -40,6 +41,18 @@ const formSchema = z.object({
    type_id: z.coerce.number({ required_error: "Select car type" }),
    description: z.string({ required_error: "description is required" })
 })
+
+const defaultValues = {
+  image_car: '',
+  name: '',
+  price: '',
+  sold: '',
+  brand_id: '',
+  is_second: '',
+  type_id: '',
+  description: ''
+}
+
 
 const UpdateForm = () => {
   const { toast } = useToast()
@@ -62,18 +75,16 @@ const UpdateForm = () => {
     })()
   },[])
 
+  
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues : {
-      image_car: '',
-      name: '',
-      price: '',
-      brand_id: '',
-      is_second: '',
-      type_id: '',
-      description: ''
-    }
+    defaultValues
   })
+  useEffect(() => {
+    if(imgUrl){
+      form.reset({...defaultValues, image_car: imgUrl})
+    }
+  }, [imgUrl])
 
    function onSubmit(values) {
     API.post(`/api/cms/cars`, {...values, image_car: imgUrl})
@@ -148,6 +159,7 @@ const UpdateForm = () => {
                </FormItem>
             )}
          />
+         <input type="hidden" {...form.register("sold")} value={false} />
          <FormField
           control={form.control}
           name="brand_id"

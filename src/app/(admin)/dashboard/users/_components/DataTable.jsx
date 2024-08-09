@@ -60,7 +60,7 @@ const DataTable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data.map((user, i) => (
+          {data.filter(i => i.role == 'user').map((user, i) => (
             <TableRow className="text-center" key={user.id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>{user.username}</TableCell>

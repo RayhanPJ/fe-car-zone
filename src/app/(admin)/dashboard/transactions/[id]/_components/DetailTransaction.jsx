@@ -9,9 +9,11 @@ import {
 import Image from "next/image";
 import data from "@/constants/dataDummy.js";
 import formatCurrency from "@/lib/currencyFormat";
+import useSWR from "swr";
+import { fetcher } from "@/api";
 // import ModalImage from "./ModalImage";
 
-const DetailTransaction = () => {
+const DetailTransaction = ({ id }) => {
   // Dapatkan ID dari parameter URL, misalnya menggunakan useRouter jika ini adalah komponen Next.js
   // const router = useRouter();
   // const { id } = router.query; // Ambil ID dari URL
