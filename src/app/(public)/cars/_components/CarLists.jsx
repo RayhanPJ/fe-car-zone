@@ -30,7 +30,7 @@ const CarLists = () => {
    }
   return (
    <>
-   <GridContainer className={"my-10 mt-[300px] md:mt-[150px] main-container"}>
+   <GridContainer className={"my-10 mt-[100px] md:mt-[150px] main-container"}>
       {data?.cars.filter(item => (
          params.get("keyword") ?
          item.name.toLowerCase().includes(params.get("keyword")) ||
@@ -39,13 +39,16 @@ const CarLists = () => {
          : item
       )).filter(c => c.sold == false).map((item) => (
          <Card key={item.ID} className="shadow-md group">
+            <figure className="max-h-[300px] w-full">
             <Image 
                src={item.image_car}
                width={300}
                height={300}
                priority
+               className="w-full h-full object-cover"
                style={{ height: 'auto', width: 'auto' }}
                />
+            </figure>
             <CardContent className="mt-5">
                <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
                <p className="my-2 text-sm md:text-lg">{formatCurrency(item.price)}</p>
