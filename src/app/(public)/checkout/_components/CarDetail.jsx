@@ -22,6 +22,7 @@ const CarDetail = () => {
    const { data, error } = useSWR(API_BASE_URL + "/api/cms/cars/" + payment.carID, fetcher)
    // console.log(data);
    if(error){
+      console.log("failed to fetch cars")
       router.replace("/cars")
       return null
    }

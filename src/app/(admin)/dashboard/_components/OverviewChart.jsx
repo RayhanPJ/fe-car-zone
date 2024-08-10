@@ -2,6 +2,8 @@
 
 import { TrendingUp } from "lucide-react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
+import useSWR from "swr"
+import { fetcher } from "@/api"
 
 import {
   Card,
@@ -16,15 +18,16 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
+import { Spinner } from "@nextui-org/react"
 
 const chartData = [
-  { month: "January", new: 23, second: 11 },
-  { month: "February", new: 32, second: 43 },
-  { month: "March", new: 66, second: 33 },
-  { month: "April", new: 23, second: 65 },
-  { month: "May", new: 43, second: 21 },
-  { month: "June", new: 44, second: 33 },
-  { month: "July", new: 54, second: 40 },
+  { date: "1", new: 23, second: 11 },
+  { date: "2", new: 32, second: 43 },
+  { date: "3", new: 66, second: 33 },
+  { date: "4", new: 23, second: 65 },
+  { date: "5", new: 43, second: 21 },
+  { date: "6", new: 44, second: 33 },
+  { date: "7", new: 54, second: 40 },
 ]
 
 const chartConfig = {
@@ -39,19 +42,24 @@ const chartConfig = {
 }
 
 export default function OverviewChart() {
+
+  const { data, isLoading, isValidating } = useSWR("/api/cms/cars/sales-data", fetcher, { refreshInterval: 10000 }) 
+
+  // console.log(data)
+  if(isLoading) return <Spinner />
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Cars sold this year</CardTitle>
+        <CardTitle>Cars sold this week</CardTitle>
         <CardDescription>
-          Showing total cars sold for every month in 2024
+          Showing total cars sold for every days in last week
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer config={chartConfig} className="h-full">
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={data?.weekly}
             margin={{
               left: 12,
               right: 12,
@@ -59,7 +67,7 @@ export default function OverviewChart() {
           >
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="month"
+              dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
@@ -88,15 +96,6 @@ export default function OverviewChart() {
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - July 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   )
 }

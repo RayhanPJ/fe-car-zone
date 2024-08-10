@@ -25,21 +25,15 @@ const formSchema = z.object({
   image_car: z.string({ required_error: "Car image is required" }),
   name: z.string({ required_error: "Model is required" }),
   price: z.coerce.number().min(0, { message: "Price is required" }),
-  brand_id: z.coerce
-    .number()
-    .int()
-    .positive({ message: "Select a valid car brand" }),
-  is_second: z.preprocess((val) => {
-    if (val === "true") return true;
-    if (val === "false") return false;
-    return val;
-  }, z.boolean({ required_error: "Select car condition" })),
-  type_id: z.coerce
-    .number()
-    .int()
-    .positive({ message: "Select a valid car type" }),
-  description: z.string({ required_error: "Description is required" }),
-});
+  brand_id: z.coerce.number().int().positive({ message: "Select a valid car brand" }),
+  is_second: z.preprocess(
+    (val) => (val === "true" ? true : val === "false" ? false : val),
+    z.boolean({ required_error: "Select car condition" })
+  ),
+  type_id: z.coerce.number().int().positive({ message: "Select a valid car type" }),
+  description: z.string({ required_error: "Description is required" })
+})
+
 
 const UpdateForm = ({ carID }) => {
   const searchParams = useSearchParams();
@@ -91,9 +85,9 @@ const UpdateForm = ({ carID }) => {
       form.reset({
         image_car: data.car.image_car || "",
         name: data.car.name || "",
-        price: data.car.price || 0,
+        price: data.car.price || '',
         brand_id: data.car.brand?.id || "",
-        is_second: data.car.is_second || false,
+        is_second: data.car.is_second ? "true" : "false",
         type_id: data.car.type?.ID || "",
         description: data.car.description || "",
       });
@@ -126,6 +120,9 @@ const UpdateForm = ({ carID }) => {
   }
 
   if (isLoading) return <Spinner />;
+  if(data.car.sold && !searchParams.get("detail")){
+    router.replace("/dashboard/cars")
+  }
   return (
     <>
       <form
@@ -167,12 +164,10 @@ const UpdateForm = ({ carID }) => {
                 )}
                 <Input
                   id="car_image"
-                  ref={inputFileRef}
-                  onChange={handleFileInputChange}
-                  type="file"
-                  accept="image/*"
-                  className="sr-only"
-                />
+                  ref={inputFileRef} 
+                  disabled={!!searchParams.get("detail")} 
+                  onChange={handleFileInputChange} 
+                  type="file" accept="image/*" className="sr-only" />
               </div>
             </div>
           </label>
@@ -212,33 +207,19 @@ const UpdateForm = ({ carID }) => {
               </option>
             ))}
           </select>
-        </div>
-        <div className="mb-5">
-          <Label>Car Condition</Label>
-          <div className="">
-            <div className="flex gap-2">
-              <input
-                disabled={!!searchParams.get("detail")}
-                defaultChecked={data?.car.is_second === false}
-                id="new"
-                value={false}
-                type="radio"
-                {...form.register("is_second")}
-              />
-              <label htmlFor="new">New</label>
-            </div>
-            <div className="flex gap-2">
-              <input
-                disabled={!!searchParams.get("detail")}
-                defaultChecked={data?.car.is_second === true}
-                id="second"
-                value={true}
-                type="radio"
-                {...form.register("is_second")}
-              />
-              <label htmlFor="second">Second</label>
-            </div>
-          </div>
+         </div>
+         <div className="mb-5">
+          <Label htmlFor="is_second">Car Condition</Label>
+          <select
+            id="is_second"
+            {...form.register("is_second")}
+            disabled={!!searchParams.get("detail")}
+            className="w-full input"
+          >
+            <option value="">Select car condition</option>
+            <option value="false">New</option>
+            <option value="true">Second</option>
+          </select>
         </div>
         <div className="mb-5">
           <Label htmlFor="car_type">Car type</Label>
@@ -267,18 +248,13 @@ const UpdateForm = ({ carID }) => {
             className="resize-y"
           />
         </div>
-        <div className="flex gap-3 mt-10">
-          <BackButton />
-          {!searchParams.get("detail") ? (
-            <Button className="w-fit" type="submit">
-              Update
-            </Button>
-          ) : (
-            <Link className="btn btn-default" href={`/dashboard/cars/${carID}`}>
-              Update this car
-            </Link>
-          )}
-        </div>
+          <div className="flex gap-3 mt-10">
+            <BackButton />
+            {!searchParams.get("detail") ?
+              <Button className="w-fit" type="submit">Update</Button>
+              : !data?.car.sold ? <Link className="btn btn-default" href={`/dashboard/cars/${carID}`}>Update this car</Link> : null
+            }
+          </div>
       </form>
     </>
   );

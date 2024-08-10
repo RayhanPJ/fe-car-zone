@@ -11,6 +11,36 @@ import { API_BASE_URL } from "@/constants/variables"
 import useSWR from "swr"
 import { OverviewCardSkeleton } from "@/components/common/Skeletons"
 import Link from "next/link"
+import { Skeleton } from "@nextui-org/react"
+import { useEffect, useState } from "react"
+import formatCurrency from "@/lib/currencyFormat"
+
+export const IncomeOverview = () => {
+   const { data, isLoading, isValidating } = useSWR("/api/cms/orders", fetcher, { refreshInterval: 10000 })
+   const [income, setIncome] = useState(0)
+
+   useEffect(() => {
+      if(data?.data){
+         const total = data.data
+         .filter(order => order.status && new Date(order.updated_at) >= new Date(new Date().setDate(new Date().getDate() - 7)))
+         .reduce((sum, order) => sum + order.total_price, 0)
+         setIncome(total)
+         console.log(total)
+      }
+   }, [data])
+
+   return <>
+      <Card>
+        <CardHeader className="pb-2">
+          <CardDescription>Income last week</CardDescription>
+          <CardTitle className="text-4xl">
+            {isLoading || isValidating && <Skeleton className="h-9 w-2/4" /> }
+            {(!isLoading) && <span>{formatCurrency(income) || 0}</span> }
+          </CardTitle>
+        </CardHeader>
+      </Card>
+   </>
+}
 
 export const CarsOverview = () => {
    const { 
@@ -44,7 +74,7 @@ export const UsersOverview = () => {
       isLoading,
       isValidating,
       error
-   } = useSWR(API_BASE_URL + '/api/cms/users', fetcher ,{ refreshInterval: 10000 })
+   } = useSWR(API_BASE_URL + '/api/cms/users', fetcher ,{ refreshInterval: 60000 })
 
    if(isLoading || isValidating) return <OverviewCardSkeleton />
    return <>

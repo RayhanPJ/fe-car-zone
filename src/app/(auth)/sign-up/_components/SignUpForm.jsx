@@ -43,9 +43,7 @@ const SignUpForm = () => {
           title: "Register success",
           description: "You can sign in to access your account",
         })
-        setTimeout(() => {
-          router.replace("/sign-in")
-        }, 3000)
+        router.replace("/sign-in")
       }
     })()
   }
