@@ -25,7 +25,7 @@ export const getCarByID = async(id) => {
 const CarsDetailPage = async ({ params }) => {
    // const car = carsData.find(item => item.id == params.id)
    const data = await getCarByID(params.id)
-   console.log(data)
+   // console.log(data)
    return (
    <>
    <div className="bg-secondary">
