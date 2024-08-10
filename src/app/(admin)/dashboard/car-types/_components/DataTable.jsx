@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/table";
 import { Pencil } from "lucide-react";
 import Link from "next/link";
-import DeleteCar from "./DeleteCar";
+import DeleteCarType from "./DeleteCarType";
 import useSWR from "swr";
 import { fetcher } from "@/api";
 import { API_BASE_URL } from "@/constants/variables";
@@ -55,7 +55,7 @@ const DataTable = () => {
                     >
                       <Pencil className="size-4" />
                     </Link>
-                    <DeleteCar id={carType.id} mutate={mutate} />
+                    <DeleteCarType id={carType.ID} mutate={mutate} />
                   </div>
                 </TableCell>
               </TableRow>
