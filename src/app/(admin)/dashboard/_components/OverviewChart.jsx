@@ -96,15 +96,6 @@ export default function OverviewChart() {
           </AreaChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none text-muted-foreground">
-              January - July 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   )
 }

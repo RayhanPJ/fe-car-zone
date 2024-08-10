@@ -12,6 +12,7 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import Link from "next/link";
 
 
 
@@ -32,8 +33,8 @@ const CheckoutPage = () => {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem>
-                <BreadcrumbLink href="/checkout" className="font-bold text-primary"> 
-                 <span className=" py-1 px-2 border border-primary rounded-full">1</span> Payment method</BreadcrumbLink>
+                <Link href="/checkout" className="font-bold text-primary"> 
+                 <span className=" py-1 px-3 border border-primary rounded-full mr-2">1</span> Payment method</Link>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
