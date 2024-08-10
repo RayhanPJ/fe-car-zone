@@ -16,12 +16,11 @@ import { fetcher } from "@/api";
 import { API_BASE_URL } from "@/constants/variables";
 import { Spinner } from "@/components/common/Spinner";
 
-const DataTable = () => {
+const DataTable = async () => {
   const { data, isLoading, mutate } = useSWR(
     API_BASE_URL + "/api/cms/type-cars",
     fetcher
   );
-  console.log(data);
 
   return (
     <>
