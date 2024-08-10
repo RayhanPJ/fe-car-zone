@@ -79,7 +79,7 @@ const PayCard = () => {
             icon: "success"
          })
 
-         window.location.href = "/order-list"
+         window.location.href = "/my-order"
       }).catch(err => {
          Swal.fire({
             title: "Order failed!",

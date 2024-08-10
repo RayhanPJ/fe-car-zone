@@ -20,7 +20,7 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  if(pathname.startsWith('/change-password') || pathname.startsWith('/profile') || pathname.startsWith('/order-list')){
+  if(pathname.startsWith('/change-password') || pathname.startsWith('/profile') || pathname.startsWith('/my-order')){
     if (tokenValue && !isTokenExpired(tokenValue)) {
       return NextResponse.next();
     }
@@ -57,7 +57,7 @@ export const config = {
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
     '/profile',
     '/change-password',
-    '/order-list',
+    '/my-order',
     '/sign-in',
     '/sign-up',
     '/checkout/:path*'
