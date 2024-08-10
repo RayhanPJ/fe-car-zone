@@ -18,7 +18,6 @@ const SearchForm = () => {
          onChange={handleInputChange} 
          placeholder="Search cars..."
          className="px-5 py-10 rounded-full text-lg" 
-         autoFocus
          type="search" />
       <Button className="rounded-full absolute right-5 py-7">
          <Search />

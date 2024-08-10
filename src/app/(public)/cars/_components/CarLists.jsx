@@ -13,6 +13,7 @@ import { CarCardSkeleton } from "@/components/common/Skeletons"
 import formatCurrency from "@/lib/currencyFormat"
 import { useSearchParams } from "next/navigation"
 import { Badge } from "@/components/ui/badge"
+import { AspectRatio } from "@/components/ui/aspect-ratio"
  
 const CarLists = () => {
    const { data, isLoading, error} = useSWR("/api/cms/cars", fetcher)
@@ -38,17 +39,16 @@ const CarLists = () => {
          item.type.name.toLowerCase().includes(params.get("keyword"))
          : item
       )).filter(c => c.sold == false).map((item) => (
-         <Card key={item.ID} className="shadow-md group">
-            <figure className="max-h-[300px] w-full">
-            <Image 
-               src={item.image_car}
-               width={300}
-               height={300}
-               priority
-               className="w-full h-full object-cover"
-               style={{ height: 'auto', width: 'auto' }}
-               />
-            </figure>
+         <Card key={item.ID} className="shadow-md group overflow-hidden">
+            <AspectRatio ratio={16 / 9} className="overflow-hidden">
+               <Image 
+                  src={item.image_car}
+                  width={400}
+                  height={300}
+                  priority
+                  className="w-full h-full max-h-[300px] object-cover group-hover:scale-[1.1] transitio duration-200"
+                  />
+            </AspectRatio>
             <CardContent className="mt-5">
                <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
                <p className="my-2 text-sm md:text-lg">{formatCurrency(item.price)}</p>
