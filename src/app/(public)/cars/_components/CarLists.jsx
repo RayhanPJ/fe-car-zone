@@ -3,8 +3,7 @@
 import { Card, CardContent, CardTitle, CardFooter } from "@/components/ui/card"
 import Image from "next/image"
 import GridContainer from "@/components/common/GridContainer"
-import { SUVIcon } from "@/components/icons"
-import { Tag } from "lucide-react"
+import { Car, Tag } from "lucide-react"
 import Link from "next/link"
 import BuyBtn from "./BuyBtn"
 import { fetcher } from "@/api"
@@ -39,11 +38,11 @@ const CarLists = () => {
          item.type.name.toLowerCase().includes(params.get("keyword"))
          : item
       )).filter(c => c.sold == false).map((item) => (
-         <Card key={item.ID} className="shadow-md group overflow-hidden">
+         <Card key={item.ID} className="shadow-md group overflow-hidden flex flex-col justify-between">
             <AspectRatio ratio={16 / 9} className="overflow-hidden">
                <Image 
                   src={item.image_car}
-                  width={400}
+                  width={300}
                   height={300}
                   priority
                   className="w-full h-full max-h-[300px] object-cover group-hover:scale-[1.1] transitio duration-200"
@@ -53,7 +52,7 @@ const CarLists = () => {
                <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
                <p className="my-2 text-sm md:text-lg">{formatCurrency(item.price)}</p>
                <div className="flex flex-col items-start my-3 gap-2 justify-between">
-                  <p className="flex capitalize items-center gap-2 font-bold"><SUVIcon className={"size-7"} />{item.type.name} </p>
+                  <p className="flex capitalize items-center gap-2 font-bold"><Car className={"size-7"} />{item.type.name} </p>
                   <p className="flex capitalize items-center gap-2 font-bold"><Tag className="size-5" /> {item.brand.name} </p>
                   <p className="flex capitalize items-center gap-2 font-bold"> {item.is_second ? <Badge variant={'outline'}>Second</Badge> : <Badge variant="success">New</Badge> } </p>
                </div>
