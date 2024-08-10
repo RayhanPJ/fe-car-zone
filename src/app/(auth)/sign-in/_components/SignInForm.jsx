@@ -53,9 +53,7 @@ const SignInForm = () => {
           variant: "success",
           title: "Sign In success",
         })
-        setTimeout(() => {
-          router.replace("/")
-        })
+        router.replace("/")
       }
     })()
   }
