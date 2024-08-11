@@ -7,29 +7,28 @@ import {
   TableRow,
   TableCaption,
 } from "@/components/ui/table";
-import { Eye, Ellipsis, Check, Trash2, X } from "lucide-react";
+import { Eye, Ellipsis, Check, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
-import DeclineTransaction from "./DeclineTransaction";
 import useSWR from "swr";
 import { API_BASE_URL } from "@/constants/variables";
 import { fetcher } from "@/api";
 import formatCurrency from "@/lib/currencyFormat";
 import { timeAgo } from "@/lib/utils"
 import Swal from "sweetalert2";
-import API from "@/api";
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { denyPayment, confirmPayment } from "@/services/payment";
+import { 
+  Dialog, 
+  DialogClose, 
+  DialogContent, 
+  DialogHeader, 
+  DialogTrigger, 
+  DialogTitle ,
+  DialogDescription
+} from "@/components/ui/dialog";
 
 const DataTable = () => {
   const showCarImage = (img) => {
@@ -129,6 +128,7 @@ const DataTable = () => {
                   <TableCell>Proof</TableCell>
                   <TableCell>Date</TableCell>
                   <TableCell>Bank</TableCell>
+                  <TableCell>Detail</TableCell>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -177,6 +177,19 @@ const DataTable = () => {
                           </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
+                      </TableCell>
+                      <TableCell>
+                      <Dialog>
+                        <DialogTrigger>Detail</DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Transaction detail</DialogTitle>
+                          </DialogHeader>
+                          <div     >
+                            <h1>ok</h1>
+                          </div     >
+                        </DialogContent>
+                      </Dialog>
                       </TableCell>
                   </TableRow>
                 ))}
