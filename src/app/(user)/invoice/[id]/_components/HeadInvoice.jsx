@@ -14,7 +14,7 @@ const HeadInvoice = ({ invoice_id }) => {
         />
         <div className="flex flex-col gap-3 justify-center">
           <h3 className="text-2xl font-bold text-right">INVOICE</h3>
-          <p className="text-md">{invoice_id}</p>
+          {/* <p className="text-md">{invoice_id}</p> */}
         </div>
       </div>
     </>
