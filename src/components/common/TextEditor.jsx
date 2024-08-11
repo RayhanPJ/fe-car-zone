@@ -10,6 +10,7 @@ import { useEffect } from "react"
 const TextEditor = ({
   value,
   onChange,
+  disabled = false,
   className,
   ...props
 }) => {
@@ -35,8 +36,11 @@ const TextEditor = ({
       }),
     ],
     content: value, 
+    editable: !disabled,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML()) 
+      if (!disabled) {
+        onChange(editor.getHTML());
+      }
     },
   })
   useEffect(() => {
