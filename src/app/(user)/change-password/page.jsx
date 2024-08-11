@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { KeyRound } from "lucide-react";
 import React, { useState } from "react";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/components/ui/use-toast"; // Import the useToast hook
+import { signOutCookie } from "@/lib/server";
+import { signOut } from "@/lib/auth";
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +15,7 @@ const Page = () => {
     confirm_password: "",
   });
 
-  const { toast } = useToast();
+  const { toast } = useToast(); // Destructure toast from useToast
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,6 +23,13 @@ const Page = () => {
       ...prevFormData,
       [name]: value,
     }));
+  };
+
+  const logOut = () => {
+    signOutCookie();
+    setTimeout(() => {
+      signOut();
+    }, 500);
   };
 
   const handleSubmit = async (e) => {
@@ -31,31 +40,27 @@ const Page = () => {
         new_password: formData.new_password,
       };
       try {
-        const response = await API.post("/api/auth/change-password", data);
+        const response = await API.post("api/auth/change-password", data);
         toast({
           title: "Success",
           description: "Password changed successfully!",
           variant: "success",
         });
+        // Reset form fields
         setFormData({
           old_password: "",
           new_password: "",
           confirm_password: "",
         });
+        logOut();
       } catch (error) {
-        if (error.response?.status === 401) {
-          toast({
-            title: "Unauthorized",
-            description: "Your session has expired. Please log in again.",
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Error",
-            description: error.response?.data?.message || "An error occurred.",
-            variant: "destructive",
-          });
-        }
+        toast({
+          title: "Error",
+          description:
+            "The password you entered is incorrect. Please try again.",
+          variant: "destructive",
+        });
+        console.error("Error changing password:", error);
       }
     } else {
       toast({
@@ -110,7 +115,7 @@ const Page = () => {
               is strong and secure.
             </p>
           </label>
-          <label className="form-control w-full max-w-2xl">
+          <label className="form-control w-full max-w-2xl my-5">
             <div className="label-text font-semibold mb-2 mt-6">
               Confirm Password
             </div>

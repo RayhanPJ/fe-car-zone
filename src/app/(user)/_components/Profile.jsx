@@ -33,6 +33,15 @@ const Profile = () => {
 
   const handleSave = async (e) => {
     e.preventDefault();
+    if (formData.username.trim().includes(" ")) {
+      toast({
+        title: "Invalid Username",
+        description:
+          "Username cannot contain spaces. Please remove spaces and try again.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     try {
       await API.put(`/api/cms/user/profile/${auth.userId}`, formData);
@@ -41,7 +50,6 @@ const Profile = () => {
         title: "Profile updated successfully",
         variant: "success",
       });
-
       mutate();
       setIsEditing(false);
     } catch (error) {
