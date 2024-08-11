@@ -34,7 +34,7 @@ const OrderList = () => {
       })
    }, [])
 
-   console.log(orders)
+   // console.log(orders)
 
   if (isLoading) return <div className="mx-auto"><Spinner /></div>
   return (
