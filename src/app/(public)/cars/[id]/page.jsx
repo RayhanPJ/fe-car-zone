@@ -9,6 +9,7 @@ import { Tooltip, TooltipTrigger, TooltipProvider, TooltipContent } from "@/comp
 import formatCurrency from "@/lib/currencyFormat"
 import BuyBtn from "../_components/BuyBtn"
 import { API_BASE_URL } from "@/constants/variables"
+import { Button } from "@/components/ui/button"
 
 export const getCarByID = async(id) => {
    const req = await fetch(API_BASE_URL + "/api/cms/cars/"+ id, { next  : { revalidate: 10 }})
@@ -24,6 +25,7 @@ export const getCarByID = async(id) => {
 const CarsDetailPage = async ({ params }) => {
    // const car = carsData.find(item => item.id == params.id)
    const data = await getCarByID(params.id)
+   // console.log(data)
    return (
    <>
    <div className="bg-secondary">
@@ -94,17 +96,18 @@ const CarsDetailPage = async ({ params }) => {
          </CardContent>
          </div>
          <CardFooter>
-            <BuyBtn car_id={data?.car.id} />
+            {data?.car.sold 
+            ? <Button className="w-full" disabled>Sold</Button>
+            : <BuyBtn car_id={data?.car.ID} />
+            }
          </CardFooter>
       </Card>
       <div className="col-span-2">
-         <article>
+         <article  >
             <h1 className="text-xl font-bold my-10">Description</h1>
 
-            <ScrollArea className="resize-y p-3 border min-h-fit max-h-[300px] w-full overflow-y-auto">
-            {data?.car.description}
-            </ScrollArea>
-         </article>
+            <div dangerouslySetInnerHTML={{ __html: data?.car.description }}/>
+         </article >
 
          <BackButton className={"w-fit mt-10"} />
       </div>

@@ -124,11 +124,10 @@ const AddForm = () => {
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select user role" />
+                      <SelectValue value="10101" placeholder="Admin" />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="20202">User</SelectItem>
                     <SelectItem value="10101">Admin</SelectItem>
                   </SelectContent>
                 </Select>

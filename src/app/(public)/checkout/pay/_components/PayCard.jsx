@@ -7,7 +7,7 @@ import { UploadIcon } from "lucide-react"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
-import { useEffect, useLayoutEffect } from "react"
+import { useEffect, useState } from "react"
 import { Copy, Check, Landmark } from "lucide-react"
 import formatCurrency from "@/lib/currencyFormat"
 import { useForm } from "react-hook-form"
@@ -18,18 +18,25 @@ import Swal from "sweetalert2"
 
 
 const PayCard = () => {
-   const { payment, setPaymentProof } = usePayment()
+   const { payment, setPaymentProof, clear } = usePayment()
    const { copiedText, copy } = useCopyToClipboard()
    const router = useRouter()
+   const [isPaid, setIsPaid] = useState(false)
    const { inputFileRef, handleFileInputChange, progressPercent, imgUrl, error } = useImageUploader()
 
-   useLayoutEffect(() => {
+   useEffect(() => {
       if(!payment.noRek || !payment.paymentProvider || !payment.totalAmount){
          router.push("/cars")
       }
 
       // console.log(payment)
    }, [payment])
+
+   useEffect(() => {
+      if(isPaid){
+         clear()
+      }
+   }, [isPaid])
 
 
    useEffect(() => {
@@ -69,13 +76,10 @@ const PayCard = () => {
          Swal.fire({
             title: "Order placed!",
             text: "Please wait until your order is confirmed by admin",
-            icon: "success",
-            confirmButtonText: "OKE"
-         }).then((result) => {
-            if (result.isConfirmed) {
-              router.replace("/order-list")
-            }
-          })
+            icon: "success"
+         })
+
+         window.location.href = "/my-order"
       }).catch(err => {
          Swal.fire({
             title: "Order failed!",

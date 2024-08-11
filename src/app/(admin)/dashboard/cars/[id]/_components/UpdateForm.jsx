@@ -1,6 +1,6 @@
 "use client"
 
-import { Label } from "@/components/ui/label" 
+import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -20,6 +20,7 @@ import { Spinner } from "@/components/common/Spinner"
 import useImageUploader from "@/hooks/useImageUploader"
 import { UploadIcon } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
+import TextEditor from "@/components/common/TextEditor"
 
 const formSchema = z.object({
   image_car: z.string({ required_error: "Car image is required" }),
@@ -27,26 +28,32 @@ const formSchema = z.object({
   price: z.coerce.number().min(0, { message: "Price is required" }),
   brand_id: z.coerce.number().int().positive({ message: "Select a valid car brand" }),
   is_second: z.preprocess(
-    (val) => {
-      if (val === "true") return true;
-      if (val === "false") return false;
-      return val;
-    },
+    (val) => (val === "true" ? true : val === "false" ? false : val),
     z.boolean({ required_error: "Select car condition" })
   ),
   type_id: z.coerce.number().int().positive({ message: "Select a valid car type" }),
-  description: z.string({ required_error: "Description is required" })
+  description: z.string().nonempty({ message: "Description is required" })
 })
+
 
 const UpdateForm = ({ carID }) => {
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const router = useRouter()
-  const { inputFileRef, handleFileInputChange, progressPercent, imgUrl, error } = useImageUploader()
+  const {
+    inputFileRef,
+    handleFileInputChange,
+    progressPercent,
+    imgUrl,
+    error,
+  } = useImageUploader()
   const [brands, setBrands] = useState([])
   const [carTypes, setCarTypes] = useState([])
-  const { data, isLoading } = useSWR(API_BASE_URL + "/api/cms/cars/"+ carID, fetcher)
-  
+  const { data : carData, isLoading } = useSWR(
+    API_BASE_URL + "/api/cms/cars/" + carID,
+    fetcher
+  )
+
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -56,123 +63,148 @@ const UpdateForm = ({ carID }) => {
       brand_id: "",
       is_second: false,
       type_id: "",
-      description: ""
-    }
+      description: "",
+    },
   })
 
   useEffect(() => {
-    (async() => {
-      try{
+    (async () => {
+      try {
         const brand = await API.get("/api/cms/brand-cars")
         const type = await API.get("/api/cms/type-cars")
         setBrands(brand.data)
         setCarTypes(type.data)
-      }catch(e) {
+      } catch (e) {
         console.error(e)
       }
     })()
-  },[])
+  }, [])
 
   useEffect(() => {
-    if (data) {
-      // Reset form with new data
+    if (carData) {
+      // Reset form with new carData
       form.reset({
-        image_car: data.car.image_car || "",
-        name: data.car.name || "",
-        price: data.car.price || 0,
-        brand_id: data.car.brand?.id || "",
-        is_second: data.car.is_second || false,
-        type_id: data.car.type?.ID || "",
-        description: data.car.description || ""
+        image_car: carData.car.image_car || "",
+        name: carData.car.name || "",
+        price: carData.car.price || '',
+        brand_id: carData.car.brand?.id || "",
+        is_second: carData.car.is_second ? "true" : "false",
+        type_id: carData.car.type?.ID || "",
+        description: carData.car.description || "",
       })
+      form.setValue("description", carData.car.description || "")
     }
-  }, [data])
+  }, [carData])
 
   function onSubmit(values) {
-    let data = {...values}
-    if(values.image_car !== imgUrl){
-       data = {...values, image_car: imgUrl}
-    }else{
-      delete data.image_car
+    let data = { ...values }
+    if(imgUrl){
+      if (values.image_car !== imgUrl) {
+        data = { ...values, image_car: imgUrl }
+      }
+    } else {
+      data = { ...values, image_car: carData?.car.image_car }
     }
-    // console.log(data)
     API.put(`/api/cms/cars/${carID}`, data)
-    .then(() => {
-      toast({
-        title: `${data?.name} updated successfully`,
-        variant: "success"
+      .then(() => {
+        toast({
+          title: `${carData?.name} updated successfully`,
+          variant: "success",
+        })
+        router.replace("/dashboard/cars")
       })
-      router.replace("/dashboard/cars")
-    })
-    .catch((error) => {
-      toast({
-        title: `Failed to update ${data?.name}`,
-        variant: "destructive"
+      .catch((error) => {
+        toast({
+          title: `Failed to update ${carData?.name}`,
+          variant: "destructive",
+        })
+        console.error(error)
       })
-      console.error(error)
-    })
-  } 
+  }
 
   if (isLoading) return <Spinner />
+  if(carData.car.sold && !searchParams.get("detail")){
+    router.replace("/dashboard/cars")
+  }
   return (
-   <>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
+    <>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-3"
+      >
         <input
           type="text"
           className="sr-only"
-          {...form.register("image_car")}/>
-         <div className="mb-5">
+          {...form.register("image_car")}
+        />
+        <div className="mb-5">
           <label htmlFor="car_image" className="mt-4 grid gap-4 cursor-pointer">
             <div className="flex py-10 items-center justify-center rounded-md border-2 border-dashed border-muted transition-colors hover:border-primary">
               <div className="text-center">
-              {(!imgUrl && !data?.car.image_car) 
-                  ?<>
+                {!imgUrl && !carData?.car.image_car ? (
+                  <>
                     <UploadIcon className="mx-auto h-12 w-12 text-muted-foreground" />
-                    <div className="mt-4 font-medium text-muted-foreground">Click to select car image</div>
-                  </>
-                  : <>
-                    <div className="w-full max-w-xl h-full max-h-max">
-                        <img src={imgUrl || data?.car.image_car } width={300} height={500} />
-                        <div className="mt-4 font-medium text-muted-foreground">Click to change</div>
+                    <div className="mt-4 font-medium text-muted-foreground">
+                      Click to select car image
                     </div>
                   </>
-              }
-              {(progressPercent > 0 && progressPercent !== 100) && <Progress  value={progressPercent}/> }
-                <Input 
+                ) : (
+                  <>
+                    <div className="w-full max-w-xl h-full max-h-max">
+                      <img
+                        src={imgUrl || carData?.car.image_car}
+                        width={300}
+                        height={500}
+                      />
+                      <div className="mt-4 font-medium text-muted-foreground">
+                        Click to change
+                      </div>
+                    </div>
+                  </>
+                )}
+                {progressPercent > 0 && progressPercent !== 100 && (
+                  <Progress value={progressPercent} />
+                )}
+                <Input
                   id="car_image"
                   ref={inputFileRef} 
+                  disabled={!!searchParams.get("detail")} 
                   onChange={handleFileInputChange} 
                   type="file" accept="image/*" className="sr-only" />
               </div>
             </div>
           </label>
-         </div>
-         <div className="mb-5">
-            <Label htmlFor="name">Car model</Label>
-            <Input
-              {...form.register("name")}
-              disabled={!!searchParams.get("detail")} 
-              type="text" placeholder="Car model..."/>
-         </div>
-         <div className="mb-5">
-            <Label htmlFor="price">Price</Label>
-            <Input   
-              {...form.register("price")}
-              disabled={!!searchParams.get("detail")} 
-              type="text" placeholder="Car price.."/>
-         </div>
-         <div className="mb-5">
-           <Label htmlFor="brand">Brand</Label>
-          <select   
+        </div>
+        <div className="mb-5">
+          <Label htmlFor="name">Car model</Label>
+          <Input
+            {...form.register("name")}
+            disabled={!!searchParams.get("detail")}
+            type="text"
+            placeholder="Car model..."
+          />
+        </div>
+        <div className="mb-5">
+          <Label htmlFor="price">Price</Label>
+          <Input
+            {...form.register("price")}
+            disabled={!!searchParams.get("detail")}
+            type="text"
+            placeholder="Car price.."
+          />
+        </div>
+        <div className="mb-5">
+          <Label htmlFor="brand">Brand</Label>
+          <select
             {...form.register("brand_id")}
-            disabled={!!searchParams.get("detail")} 
-            id="brand" 
+            disabled={!!searchParams.get("detail")}
+            id="brand"
             className="w-full input"
           >
             <option value="" disabled>
               Select car brand
             </option>
-            {brands.map(item => (
+            {brands.map((item) => (
               <option key={item.id} value={item.id}>
                 {item.name} - {item.id}
               </option>
@@ -180,65 +212,62 @@ const UpdateForm = ({ carID }) => {
           </select>
          </div>
          <div className="mb-5">
-            <Label>Car Condition</Label>
-            <div className="">
-              <div className="flex gap-2">
-                <input
-                  disabled={!!searchParams.get("detail")} 
-                  defaultChecked={data?.car.is_second === false}
-                  id="new"
-                  value={false}
-                  type="radio" 
-                  {...form.register("is_second")} />
-                <label htmlFor="new">New</label>
-              </div>
-              <div className="flex gap-2">
-                <input
-                  disabled={!!searchParams.get("detail")} 
-                  defaultChecked={data?.car.is_second === true}
-                  id="second"
-                  value={true}
-                  type="radio" 
-                  {...form.register("is_second")} />
-                <label htmlFor="second">Second</label>
-              </div>
-            </div>
-         </div>
+          <Label htmlFor="is_second">Car Condition</Label>
+          <select
+            id="is_second"
+            {...form.register("is_second")}
+            disabled={!!searchParams.get("detail")}
+            className="w-full input"
+          >
+            <option value="">Select car condition</option>
+            <option value="false">New</option>
+            <option value="true">Second</option>
+          </select>
+        </div>
         <div className="mb-5">
           <Label htmlFor="car_type">Car type</Label>
-            <select 
-              {...form.register("type_id")} 
-              id="car_type" 
-              className="w-full input"
-              disabled={!!searchParams.get("detail")}
-            >
-              <option value="" disabled>
-                Select car type
+          <select
+            {...form.register("type_id")}
+            id="car_type"
+            className="w-full input"
+            disabled={!!searchParams.get("detail")}
+          >
+            <option value="" disabled>
+              Select car type
+            </option>
+            {carTypes.map((item) => (
+              <option key={item.ID} value={item.ID}>
+                {item.name} - {item.ID}
               </option>
-              {carTypes.map(item => (
-                <option key={item.ID} value={item.ID}>
-                  {item.name} - {item.ID}
-                </option>
-              ))}
-            </select>
+            ))}
+          </select>
         </div>
         <div className="mb-5">
           <Label>Description</Label>
-          <Textarea 
+          <TextEditor 
+
+             value={form.watch("description")}
+             onChange={(content) => form.setValue("description", content)}
+             disabled={!!searchParams.get("detail")}
+             placeholder="Description..."
+             className="resize-y" />
+          {/* <Textarea
             {...form.register("description")}
             disabled={!!searchParams.get("detail")}
             placeholder="Description..."
-            className="resize-y"/>
+            className="resize-y"
+          /> */}
         </div>
           <div className="flex gap-3 mt-10">
             <BackButton />
             {!searchParams.get("detail") ?
               <Button className="w-fit" type="submit">Update</Button>
-              : <Link className="btn btn-default" href={`/dashboard/cars/${carID}`}>Update this car</Link>
+              : !carData?.car.sold 
+                ? <Link className="btn btn-default" href={`/dashboard/cars/${carID}`}>Update this car</Link> : null
             }
           </div>
       </form>
-   </>
+    </>
   )
 }
 

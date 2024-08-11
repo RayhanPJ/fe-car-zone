@@ -13,9 +13,9 @@ const UsersListPage = () => {
           <BreadCrumb />
         </div>
 
-        {/* <Link className="btn btn-default" href={"/dashboard/users/add"}>
-          Add New User
-        </Link> */}
+        <Link className="btn btn-default" href={"/dashboard/admins/add"}>
+          Add New Admin
+        </Link>
       </div>
 
       <Card className="p-5 min-h-fit overflow-x-auto">

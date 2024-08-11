@@ -2,6 +2,7 @@
  import { Button } from "@/components/ui/button"
  import API from "@/api"
  import Swal from "sweetalert2"
+ import { Trash2 } from "lucide-react"
 
 const DeleteCar = ({ id, mutate }) => {
 
@@ -48,7 +49,7 @@ const DeleteCar = ({ id, mutate }) => {
       <form onSubmit={onSubmit}>
          <Button 
             variant="destructive"
-            type="submit">Delete</Button>
+            type="submit"><Trash2 /> </Button>
       </form>
       {/* <AlertDialog>
          <AlertDialogTrigger asChild>

@@ -16,8 +16,8 @@ const links = [
       text: "change password"
    },
    {
-      href: "/order-list",
-      text: "order list"
+      href: "/my-order",
+      text: "My order"
    },
 ]
 

@@ -10,7 +10,7 @@ const Header = () => {
             <Settings /> Setting
           </div>
           <p className=" text-slate-500 my-3">
-            Manage your account settings and set e-mail preferences.
+            Manage your account settings.
           </p>
         </div>
       </div>
