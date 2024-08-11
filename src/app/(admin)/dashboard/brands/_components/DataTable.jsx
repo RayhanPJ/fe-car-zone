@@ -38,7 +38,6 @@ const DataTable = () => {
         <TableRow className="text-center">
           <TableCell>No</TableCell>
           <TableCell>Name</TableCell>
-          <TableCell>Options</TableCell>
           <TableCell>Action</TableCell>
         </TableRow>
       </TableHeader>
@@ -55,28 +54,6 @@ const DataTable = () => {
             <TableRow className="text-center" key={brand.id}>
               <TableCell>{i + 1}</TableCell>
               <TableCell>{brand.name}</TableCell>
-              <TableCell className="flex items-center gap-2 justify-center">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost">
-                      <Ellipsis />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
-                    <DropdownMenuLabel>Action to this cell</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <Link
-                        className="flex w-full items-center gap-2"
-                        href={`/dashboard/brands/${brand.id}?detail=true`}
-                      >
-                        <Eye className="size-4" />
-                        <span>Detail</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
               <TableCell>
                 <div className="flex items-center gap-2 justify-center">
                   <Link
