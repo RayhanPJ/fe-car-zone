@@ -14,7 +14,6 @@ import {
  } from "@/components/ui/card"
  import Image from "next/image"
  import Link from "next/link"
-import { Eye } from "lucide-react"
 import { timeAgo } from "@/lib/utils"
 import { useCallback } from "react"
 import Swal from "sweetalert2"
@@ -35,39 +34,7 @@ const OrderList = () => {
       })
    }, [])
 
-   const showDetail = useCallback(async (orderId) => {
-      try {
-         console.log(orderId)
-         Swal.fire({
-           title: 'Processing...',
-           allowOutsideClick: false,
-           didOpen: () => {
-             Swal.showLoading()
-           },
-         })
-
-         const res = await API.get(`/api/cms/transactions/${orderId}`)
-         Swal.close()
-     
-         // Show success SweetAlert
-         Swal.fire({
-           title: 'Success!',
-           text: 'Data retrieved successfully',
-           icon: 'success',
-         })
-     
-         // Handle the data
-         console.log(data)
-       } catch (error) {
-         Swal.close()
-         Swal.fire({
-           title: 'Error!',
-           text: 'Something went wrong!',
-           icon: 'error',
-         })
-         console.error('Error:', error)
-       }
-   }, [])
+   console.log(orders)
 
   if (isLoading) return <div className="mx-auto"><Spinner /></div>
   return (
@@ -78,7 +45,7 @@ const OrderList = () => {
                <TooltipProvider>
                   <Tooltip >
                      <TooltipTrigger className="text-left">
-                        <span>{timeAgo(item.created_at)}</span>
+                        <span>Order created : {timeAgo(item.created_at)}</span>
                      </TooltipTrigger>
                      <TooltipContent className="text-left">
                         <p>{new Date(item.created_at).toLocaleString()}</p>
@@ -86,18 +53,33 @@ const OrderList = () => {
                   </Tooltip>
                </TooltipProvider>
                {item.status 
-                  ? <Badge>Success</Badge>
+                  ? <Badge variant={"success"}>Success</Badge>
                   : <Badge variant={"destructive"}>Pending</Badge>
                }  
             </CardHeader>
-            <CardContent className="flex justify-between items-center">
+            <CardContent className="flex items-start gap-3">
+               <Image 
+                  src={item.car.image_car}
+                  width={100}
+                  height={100}
+                  />
+               <div className="">
+                  <h1 className="text-lg font-bold">{item.car.name}</h1>
+                  {item.status &&
+                     <p>Confirmed at : {new Date(item.car.updated_at).toLocaleString()}</p>
+                  }
+               </div>
+            </CardContent>
+            <CardFooter className="flex justify-between items-center">
                <Button variant={"outline"} onClick={() => showImage(item.order_image)}>
                   View Proof
                </Button>
-               <Button onClick={() => showDetail(item.id)}>
-                  Details
-               </Button>
-            </CardContent>
+               {item.status &&
+                  <Link className="btn btn-default" href={`/invoice/${item.id}`}>
+                     View invoice
+                  </Link>
+               }
+            </CardFooter>
          </Card>
       )))}
    </>
