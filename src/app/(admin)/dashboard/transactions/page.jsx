@@ -2,6 +2,10 @@ import BreadCrumb from "@/components/common/BreadCrumb";
 import DataTable from "./_components/DataTable";
 import { Card } from "@/components/ui/card";
 
+export const metadata ={
+  title: "Transactions - Dashboard carzone"
+}
+
 const TransactionPage = () => {
   return (
     <>

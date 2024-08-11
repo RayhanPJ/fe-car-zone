@@ -29,6 +29,8 @@ import {
   DialogTitle ,
   DialogDescription
 } from "@/components/ui/dialog";
+import TransactionDetail from "./TransactionDetail";
+import { Spinner } from "@/components/common/Spinner";
 
 const DataTable = () => {
   const showCarImage = (img) => {
@@ -107,7 +109,7 @@ const DataTable = () => {
     mutate
  } = useSWR(API_BASE_URL + "/api/cms/transactions", fetcher, { refreshInterval: 10000 })
 
- 
+  if(isLoading) return <Spinner className={"mx-auto my-10 "} /> 
   return (
     <>
       <Tabs defaultValue="pending">
@@ -180,14 +182,21 @@ const DataTable = () => {
                       </TableCell>
                       <TableCell>
                       <Dialog>
-                        <DialogTrigger>Detail</DialogTrigger>
+                        <DialogTrigger>
+                          <button className="btn btn-ghost">
+                            Detail
+                          </button>
+                        </DialogTrigger>
                         <DialogContent>
                           <DialogHeader>
-                            <DialogTitle>Transaction detail</DialogTitle>
+                            <DialogTitle>Details</DialogTitle>
                           </DialogHeader>
-                          <div     >
-                            <h1>ok</h1>
-                          </div     >
+                          <div>
+                            <TransactionDetail 
+                              transactionData={transaction}
+                              orderID={transaction.order_id}
+                              userID={transaction.order.user_id} />
+                          </div>
                         </DialogContent>
                       </Dialog>
                       </TableCell>
@@ -209,6 +218,7 @@ const DataTable = () => {
                   <TableCell>Proof</TableCell>
                   <TableCell>Date</TableCell>
                   <TableCell>Bank</TableCell>
+                  <TableCell>Detail</TableCell>
                   <TableCell>Actions</TableCell>
                 </TableRow>
               </TableHeader>
@@ -259,6 +269,26 @@ const DataTable = () => {
                           </Tooltip>
                         </TooltipProvider>
                     </TableCell>
+                    <TableCell>
+                      <Dialog>
+                        <DialogTrigger>
+                          <button className="btn btn-ghost">
+                            Detail
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Details</DialogTitle>
+                          </DialogHeader>
+                          <div>
+                            <TransactionDetail 
+                              transactionData={transaction}
+                              orderID={transaction.order_id}
+                              userID={transaction.order.user_id} />
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                      </TableCell>
                     <TableCell>
                       <TooltipProvider>
                       <div className="flex items-center gap-2 justify-center">

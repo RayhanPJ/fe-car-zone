@@ -25,7 +25,7 @@ export const IncomeOverview = () => {
          .filter(order => order.status && new Date(order.updated_at) >= new Date(new Date().setDate(new Date().getDate() - 7)))
          .reduce((sum, order) => sum + order.total_price, 0)
          setIncome(total)
-         console.log(total)
+         // console.log(total)
       }
    }, [data])
 
