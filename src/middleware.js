@@ -20,7 +20,7 @@ export function middleware(request) {
     return NextResponse.next();
   }
 
-  if(pathname.startsWith('/change-password') || pathname.startsWith('/profile') || pathname.startsWith('/my-order')){
+  if(pathname.startsWith('/change-password') || pathname.startsWith('/profile') || pathname.startsWith('/my-order') || pathname.startsWith('/invoice')){
     if (tokenValue && !isTokenExpired(tokenValue)) {
       return NextResponse.next();
     }
@@ -58,6 +58,7 @@ export const config = {
     '/profile',
     '/change-password',
     '/my-order',
+    '/invoice/:path*',
     '/sign-in',
     '/sign-up',
     '/checkout/:path*'
