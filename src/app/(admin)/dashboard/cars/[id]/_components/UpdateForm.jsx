@@ -1,25 +1,26 @@
-"use client";
+"use client"
 
-import { Label } from "@/components/ui/label";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { BackButton } from "@/components/common/BackButton";
-import { useEffect, useState } from "react";
-import API, { fetcher } from "@/api";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import { useSearchParams } from "next/navigation";
-import Link from "next/link";
-import useSWR from "swr";
-import { API_BASE_URL } from "@/constants/variables";
-import { Spinner } from "@/components/common/Spinner";
-import useImageUploader from "@/hooks/useImageUploader";
-import { UploadIcon } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
+import { Label } from "@/components/ui/label"
+import { useForm } from "react-hook-form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Button } from "@/components/ui/button"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { BackButton } from "@/components/common/BackButton"
+import { useEffect, useState } from "react"
+import API, { fetcher } from "@/api"
+import { useToast } from "@/components/ui/use-toast"
+import { useRouter } from "next/navigation"
+import { useSearchParams } from "next/navigation"
+import Link from "next/link"
+import useSWR from "swr"
+import { API_BASE_URL } from "@/constants/variables"
+import { Spinner } from "@/components/common/Spinner"
+import useImageUploader from "@/hooks/useImageUploader"
+import { UploadIcon } from "lucide-react"
+import { Progress } from "@/components/ui/progress"
+import TextEditor from "@/components/common/TextEditor"
 
 const formSchema = z.object({
   image_car: z.string({ required_error: "Car image is required" }),
@@ -31,27 +32,27 @@ const formSchema = z.object({
     z.boolean({ required_error: "Select car condition" })
   ),
   type_id: z.coerce.number().int().positive({ message: "Select a valid car type" }),
-  description: z.string({ required_error: "Description is required" })
+  description: z.string().nonempty({ message: "Description is required" })
 })
 
 
 const UpdateForm = ({ carID }) => {
-  const searchParams = useSearchParams();
-  const { toast } = useToast();
-  const router = useRouter();
+  const searchParams = useSearchParams()
+  const { toast } = useToast()
+  const router = useRouter()
   const {
     inputFileRef,
     handleFileInputChange,
     progressPercent,
     imgUrl,
     error,
-  } = useImageUploader();
-  const [brands, setBrands] = useState([]);
-  const [carTypes, setCarTypes] = useState([]);
-  const { data, isLoading } = useSWR(
+  } = useImageUploader()
+  const [brands, setBrands] = useState([])
+  const [carTypes, setCarTypes] = useState([])
+  const { data : carData, isLoading } = useSWR(
     API_BASE_URL + "/api/cms/cars/" + carID,
     fetcher
-  );
+  )
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -64,63 +65,65 @@ const UpdateForm = ({ carID }) => {
       type_id: "",
       description: "",
     },
-  });
+  })
 
   useEffect(() => {
     (async () => {
       try {
-        const brand = await API.get("/api/cms/brand-cars");
-        const type = await API.get("/api/cms/type-cars");
-        setBrands(brand.data);
-        setCarTypes(type.data);
+        const brand = await API.get("/api/cms/brand-cars")
+        const type = await API.get("/api/cms/type-cars")
+        setBrands(brand.data)
+        setCarTypes(type.data)
       } catch (e) {
-        console.error(e);
+        console.error(e)
       }
-    })();
-  }, []);
+    })()
+  }, [])
 
   useEffect(() => {
-    if (data) {
-      // Reset form with new data
+    if (carData) {
+      // Reset form with new carData
       form.reset({
-        image_car: data.car.image_car || "",
-        name: data.car.name || "",
-        price: data.car.price || '',
-        brand_id: data.car.brand?.id || "",
-        is_second: data.car.is_second ? "true" : "false",
-        type_id: data.car.type?.ID || "",
-        description: data.car.description || "",
-      });
+        image_car: carData.car.image_car || "",
+        name: carData.car.name || "",
+        price: carData.car.price || '',
+        brand_id: carData.car.brand?.id || "",
+        is_second: carData.car.is_second ? "true" : "false",
+        type_id: carData.car.type?.ID || "",
+        description: carData.car.description || "",
+      })
+      form.setValue("description", carData.car.description || "")
     }
-  }, [data]);
+  }, [carData])
 
   function onSubmit(values) {
-    let data = { ...values };
-    if (values.image_car !== imgUrl) {
-      data = { ...values, image_car: imgUrl };
+    let data = { ...values }
+    if(imgUrl){
+      if (values.image_car !== imgUrl) {
+        data = { ...values, image_car: imgUrl }
+      }
     } else {
-      delete data.image_car;
+      data = { ...values, image_car: carData?.car.image_car }
     }
-    // console.log(data)
     API.put(`/api/cms/cars/${carID}`, data)
       .then(() => {
         toast({
-          title: `${data?.name} updated successfully`,
+          title: `${carData?.name} updated successfully`,
           variant: "success",
-        });
-        router.replace("/dashboard/cars");
+        })
+        router.replace("/dashboard/cars")
       })
       .catch((error) => {
         toast({
-          title: `Failed to update ${data?.name}`,
+          title: `Failed to update ${carData?.name}`,
           variant: "destructive",
-        });
-        console.error(error);
-      });
+        })
+        console.error(error)
+      })
   }
 
-  if (isLoading) return <Spinner />;
-  if(data.car.sold && !searchParams.get("detail")){
+  if (isLoading) return <Spinner />
+  if(carData.car.sold && !searchParams.get("detail")){
     router.replace("/dashboard/cars")
   }
   return (
@@ -138,7 +141,7 @@ const UpdateForm = ({ carID }) => {
           <label htmlFor="car_image" className="mt-4 grid gap-4 cursor-pointer">
             <div className="flex py-10 items-center justify-center rounded-md border-2 border-dashed border-muted transition-colors hover:border-primary">
               <div className="text-center">
-                {!imgUrl && !data?.car.image_car ? (
+                {!imgUrl && !carData?.car.image_car ? (
                   <>
                     <UploadIcon className="mx-auto h-12 w-12 text-muted-foreground" />
                     <div className="mt-4 font-medium text-muted-foreground">
@@ -149,7 +152,7 @@ const UpdateForm = ({ carID }) => {
                   <>
                     <div className="w-full max-w-xl h-full max-h-max">
                       <img
-                        src={imgUrl || data?.car.image_car}
+                        src={imgUrl || carData?.car.image_car}
                         width={300}
                         height={500}
                       />
@@ -241,23 +244,31 @@ const UpdateForm = ({ carID }) => {
         </div>
         <div className="mb-5">
           <Label>Description</Label>
-          <Textarea
+          <TextEditor 
+
+             value={form.watch("description")}
+             onChange={(content) => form.setValue("description", content)}
+             disabled={!!searchParams.get("detail")}
+             placeholder="Description..."
+             className="resize-y" />
+          {/* <Textarea
             {...form.register("description")}
             disabled={!!searchParams.get("detail")}
             placeholder="Description..."
             className="resize-y"
-          />
+          /> */}
         </div>
           <div className="flex gap-3 mt-10">
             <BackButton />
             {!searchParams.get("detail") ?
               <Button className="w-fit" type="submit">Update</Button>
-              : !data?.car.sold ? <Link className="btn btn-default" href={`/dashboard/cars/${carID}`}>Update this car</Link> : null
+              : !carData?.car.sold 
+                ? <Link className="btn btn-default" href={`/dashboard/cars/${carID}`}>Update this car</Link> : null
             }
           </div>
       </form>
     </>
-  );
-};
+  )
+}
 
-export default UpdateForm;
+export default UpdateForm

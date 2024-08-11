@@ -25,6 +25,7 @@ export const getCarByID = async(id) => {
 const CarsDetailPage = async ({ params }) => {
    // const car = carsData.find(item => item.id == params.id)
    const data = await getCarByID(params.id)
+   // console.log(data)
    return (
    <>
    <div className="bg-secondary">
@@ -97,18 +98,16 @@ const CarsDetailPage = async ({ params }) => {
          <CardFooter>
             {data?.car.sold 
             ? <Button className="w-full" disabled>Sold</Button>
-            : <BuyBtn car_id={data?.car.id} />
+            : <BuyBtn car_id={data?.car.ID} />
             }
          </CardFooter>
       </Card>
       <div className="col-span-2">
-         <article>
+         <article  >
             <h1 className="text-xl font-bold my-10">Description</h1>
 
-            <ScrollArea className="resize-y p-3 border min-h-fit max-h-[300px] w-full overflow-y-auto">
-            {data?.car.description}
-            </ScrollArea>
-         </article>
+            <div dangerouslySetInnerHTML={{ __html: data?.car.description }}/>
+         </article >
 
          <BackButton className={"w-fit mt-10"} />
       </div>

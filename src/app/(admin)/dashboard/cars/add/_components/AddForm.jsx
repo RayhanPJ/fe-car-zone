@@ -23,6 +23,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
 import { Progress } from "@/components/ui/progress"
 import Link from "next/link"
+import TextEditor from "@/components/common/TextEditor"
 
 const formSchema = z.object({
    image_car: z.string({ required_error: "Model is required" }),
@@ -107,6 +108,7 @@ const UpdateForm = () => {
   return (
    <>
       <Form {...form}>
+      {imgUrl &&  <Link href={imgUrl} target="_blank" className="my-5">View image</Link> }
       <label htmlFor="car_image" className="mt-4 grid gap-4 cursor-pointer">
           <div className="flex py-10 items-center justify-center rounded-md border-2 border-dashed border-muted transition-colors hover:border-primary">
             <div className="text-center">
@@ -131,7 +133,6 @@ const UpdateForm = () => {
             </div>
           </div>
       </label>
-      {imgUrl &&  <Link href={imgUrl} target="_blank" className="my-5">View image</Link> }
       <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-3">
          <FormField 
             control={form.control}
@@ -240,10 +241,11 @@ const UpdateForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Description</FormLabel>
-              <Textarea 
+              {/* <Textarea 
                 required
                placeholder="Description..."
-               className="resize-y" {...field} />
+               className="resize-y" {...field} /> */}
+               <TextEditor {...field} />
             </FormItem>
           )}
         />

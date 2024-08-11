@@ -17,7 +17,7 @@ const links = [
   },
   {
     href: "/my-order",
-    text: "My Order",
+    text: "My order",
   },
 ];
 

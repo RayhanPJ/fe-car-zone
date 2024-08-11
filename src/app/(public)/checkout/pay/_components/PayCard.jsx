@@ -90,8 +90,15 @@ const PayCard = () => {
           text: "Please wait until your order is confirmed by admin",
           icon: "success",
         });
-
         window.location.href = "/my-order";
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: "Order failed!",
+          text: "Your transaction is failed, please try again!",
+          icon: "error",
+        });
+        console.error(err);
       })
       .catch((err) => {
         Swal.fire({
