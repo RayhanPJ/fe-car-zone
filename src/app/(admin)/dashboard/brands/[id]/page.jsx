@@ -4,26 +4,24 @@ import BreadCrumb from "@/components/common/BreadCrumb";
 import UpdateForm from "./_components/UpdateForm";
 import { BackButton } from "@/components/common/BackButton";
 import { Card } from "@/components/ui/card";
-import { useRouter, useParams } from "next/navigation"; // Import useParams
+import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import API from "@/api";
 import { Spinner } from "@nextui-org/react";
 
 const UpdateBrandsPage = () => {
   const router = useRouter();
-  const { id } = useParams(); // Menggunakan useParams untuk mendapatkan id dari URL
+  const { id } = useParams();
   const [brandData, setBrandData] = useState(null);
 
   useEffect(() => {
     if (id) {
-      // Memanggil API untuk mendapatkan data brand berdasarkan id
       API.get(`/api/cms/brand-cars/${id}`)
         .then((res) => {
           setBrandData(res.data);
         })
         .catch((error) => {
           console.error("Failed to fetch brand data:", error);
-          // Anda bisa menambahkan logika penanganan error di sini
         });
     }
   }, [id]);
