@@ -1,5 +1,5 @@
-import Header from './_components/header';
-import Sidebar from './_components/sidebar';
+import Header from './_components/Header';
+import Sidebar from './_components/Sidebar';
 // import { ScrollArea } from '@/components/ui/scroll-area';
 
 export const metadata = {
