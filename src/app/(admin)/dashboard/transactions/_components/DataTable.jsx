@@ -33,6 +33,14 @@ import TransactionDetail from "./TransactionDetail";
 import { Spinner } from "@/components/common/Spinner";
 
 const DataTable = () => {
+  const { 
+    data : transactions, 
+    isLoading,
+    isValidating,
+    error ,
+    mutate
+ } = useSWR(API_BASE_URL + "/api/cms/transactions", fetcher, { refreshInterval: 10000 })
+
   const showCarImage = (img) => {
     // console.log(img)
     Swal.fire({
@@ -54,12 +62,12 @@ const DataTable = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         if(confirmPayment(order_data, transaction_id)){
+          mutate()
           Swal.fire({
             title: "Transaction Confirmed",
             text: "Transaction succesfuly confirmed",
             icon: "success"
           })
-          mutate()
         }else{
           Swal.fire({
             title: "Transaction Failed to Confirmed",
@@ -100,15 +108,7 @@ const DataTable = () => {
       })
     }
 
-
-  const { 
-    data : transactions, 
-    isLoading,
-    isValidating,
-    error ,
-    mutate
- } = useSWR(API_BASE_URL + "/api/cms/transactions", fetcher, { refreshInterval: 10000 })
-
+  if(error) return <div>Failed to fetch data</div>
   if(isLoading) return <Spinner className={"mx-auto my-10 "} /> 
   return (
     <>

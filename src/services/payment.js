@@ -3,17 +3,20 @@ import API from "@/api";
 
 export const confirmPayment = async(order_data, transaction_id) => {
    // set order status to be true
+   // console.log(order_data)
+   // return
    const order = await API.put("/api/cms/orders/" + order_data.id, { 
       status: true,
       car_id: order_data.car_id,
       total_price: order_data.total_price,
       order_image: order_data.order_image,
+      user_id: order_data.user_id
     })
 
     if(order.status !== 200){
       console.error("Order failed to update")
       return false
-    }
+    } 
 
    //  update car sold to be true
    const car = await API.put("/api/cms/cars/" + order_data.car_id, {
