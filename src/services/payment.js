@@ -1,7 +1,7 @@
 "use client"
 import API from "@/api";
 
-export const confirmPayment = async(order_data, transaction_id) => {
+export const confirmPayment = async (order_data, transaction_id, callback) => {
    // set order status to be true
    // console.log(order_data)
    // return
@@ -15,7 +15,7 @@ export const confirmPayment = async(order_data, transaction_id) => {
 
     if(order.status !== 200){
       console.error("Order failed to update")
-      return false
+      return callback(false, "Order failed to update")
     } 
 
    //  update car sold to be true
@@ -32,7 +32,7 @@ export const confirmPayment = async(order_data, transaction_id) => {
 
     if(car.status !== 200){
       console.error("Car failed to update")
-      return false
+      return callback(false, "Car failed to update")
     }
 
    // insert new invoice
@@ -41,19 +41,19 @@ export const confirmPayment = async(order_data, transaction_id) => {
       transaction_id
     })
 
-    return true
+    return callback(true, null)
 }
 
-export const denyPayment = async (transaction_data) => {
+export const denyPayment = async (transaction_data, callback) => {
    const transaction = await API.delete("/api/cms/transactions/" + transaction_data.id)
    if(transaction.status !== 200){
-      console.error("Transactions failed to update")
-      return false
+      console.error("Transactions failed to delete")
+      return callback(false, "transaction failed to delete")
    }
    const order = await API.delete("/api/cms/orders/" + transaction_data.order.id)
    if(order.status !== 200){
-      console.error("Order failed to update")
-      return false
+      console.error("Order failed to delete")
+      return callback(false, "order failed to delete")
    }
-   return true
+   return callback(true, null)
 }

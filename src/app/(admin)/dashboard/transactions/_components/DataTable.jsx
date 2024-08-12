@@ -39,7 +39,7 @@ const DataTable = () => {
     isValidating,
     error ,
     mutate
- } = useSWR(API_BASE_URL + "/api/cms/transactions", fetcher, { refreshInterval: 10000 })
+ } = useSWR(API_BASE_URL + "/api/cms/transactions", fetcher, { revalidateOnFocus: true })
 
   const showCarImage = (img) => {
     // console.log(img)
@@ -63,20 +63,22 @@ const DataTable = () => {
       confirmButtonText: "Yes, Confirm it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        if(confirmPayment(order_data, transaction_id)){
-          mutate()
-          Swal.fire({
-            title: "Transaction Confirmed",
-            text: "Transaction succesfuly confirmed",
-            icon: "success"
-          })
-        }else{
-          Swal.fire({
-            title: "Transaction Failed to Confirmed",
-            text: "Something went wrong, please try again!",
-            icon: "error"
-          })
-        }
+        confirmPayment(order_data, transaction_id, (success, error) => {
+          if (success) {
+            mutate()
+            Swal.fire({
+              title: "Transaction Confirmed",
+              text: "Transaction successfully confirmed",
+              icon: "success"
+            })
+          } else {
+            Swal.fire({
+              title: "Transaction Failed to Confirm",
+              text: error || "Something went wrong, please try again!",
+              icon: "error"
+            })
+          }
+        })
       }
     })
   }
@@ -92,20 +94,23 @@ const DataTable = () => {
         confirmButtonText: "Yes, Deny it!"
       }).then((result) => {
         if (result.isConfirmed) {
-          if(denyPayment(transaction_data)){
-            Swal.fire({
-              title: "Transaction Deleted",
-              text: "Transaction succesfuly deleted",
-              icon: "success"
-            })
-            mutate()
-          }else{
-            Swal.fire({
-              title: "Transaction Failed to Delete",
-              text: "Something went wrong, please try again!",
-              icon: "error"
-            })
-          }
+          denyPayment(transaction_data, (status, msg) => {
+            if(status){
+              mutate()
+              Swal.fire({
+                title: "Transaction Deleted",
+                text: "Transaction succesfuly deleted",
+                icon: "success"
+              })
+            }else{
+              Swal.fire({
+                title: "Transaction Failed to Delete",
+                text: "Something went wrong, please try again!",
+                icon: "error"
+              })
+            }
+          })
+          
         }
       })
     }
