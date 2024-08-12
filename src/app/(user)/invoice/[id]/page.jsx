@@ -8,19 +8,17 @@ import TableInvoice from "./_components/TableInvoice";
 import CalculateInvoice from "./_components/CalculateInvoice";
 import PrintInvoice from "./_components/PrintInvoice";
 import { Spinner } from "@/components/common/Spinner";
-import { useSearchParams } from "next/navigation";
 import useSWR from "swr";
+import { useRouter } from "next/router";
 
 const InvoicePage = () => {
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const router = useRouter();
+  const { id } = router.query;
 
-  if (!id) {
-    return <div>Loading...</div>;
-  }
+  console.log(id);
 
   const { data: orders, isLoading } = useSWR(
-    `/api/cms/orders/${auth.userId}`,
+    id ? `/api/cms/orders/${id}` : null,
     fetcher,
     { revalidateOnFocus: true }
   );
@@ -37,10 +35,7 @@ const InvoicePage = () => {
     return <div>No orders data found</div>;
   }
 
-  const invoice = orders.data.find((order) => order.id === parseInt(id));
-  if (!invoice) {
-    return <div>Invoice not found</div>;
-  }
+  const invoice = orders.data; // Data invoice langsung dari response
 
   return (
     <section className="flex flex-col gap-3 p-5 w-full min-h-100% justify-center items-center">
