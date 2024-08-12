@@ -30,7 +30,7 @@ const TransactionDetail = ({ userID, transactionData, orderID }) => {
         <div className="">
           <h1 className="text-lg font-bold">{orderData[0].car.name}</h1>
           <p>{formatCurrency(orderData[0].car.price)}</p>
-          {orderData[0].car.status
+          {!orderData[0].car.sold
           ? <Badge variant={"success"}>Available</Badge>
           : <Badge variant={"destructive"}>Sold</Badge>
           }
