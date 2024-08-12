@@ -42,7 +42,7 @@ const AddForm = () => {
       username: "",
       email: "",
       password: "",
-      role_id: 0,
+      role_id: 10101,
     },
   });
 
@@ -56,7 +56,7 @@ const AddForm = () => {
       }
 
       console.log("Success:", response.data);
-      router.push("/dashboard/users");
+      router.push("/dashboard/admins");
     } catch (error) {
       console.error("Error:", error);
     }

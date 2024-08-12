@@ -22,10 +22,11 @@ const TableInvoice = ({ product, status }) => {
               {formatCurrency(product?.price)}
             </td>
             <td className="py-3 px-4 text-center">
-              {status
-              ? <Badge variant={"success"}>Paid (Confirmed)</Badge>
-              : <Badge variant={"destructive"}>Pending</Badge>
-              }
+              {status ? (
+                <Badge variant={"success"}>Paid (Confirmed)</Badge>
+              ) : (
+                <Badge variant={"destructive"}>Pending</Badge>
+              )}
             </td>
           </tr>
         </tbody>
