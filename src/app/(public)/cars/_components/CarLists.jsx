@@ -21,7 +21,7 @@ const CarLists = () => {
    if (error) return <div className="p-7 bg-destructive text-destructive-foreground rounded-xl">{error}</div>
    if(isLoading) {
       return <>
-       <GridContainer className={"my-10 mt-[300px] md:mt-[150px] main-container"}>
+       <GridContainer className={"my-10 mt-[100px] md:mt-[150px]  main-container"}>
          {Array(4).fill(0).map((_, i) => (
             <CarCardSkeleton key={i}/>  
          ))}
@@ -49,11 +49,11 @@ const CarLists = () => {
                   />
             </AspectRatio>
             <CardContent className="mt-5">
-               <CardTitle className="text-lg md:text-xl sm:line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
+               <CardTitle className="text-lg md:text-xl line-clamp-1 group-hover:line-clamp-none">{item.name}</CardTitle>
                <p className="my-2 text-sm md:text-lg">{formatCurrency(item.price)}</p>
                <div className="flex flex-col items-start my-3 gap-2 justify-between">
-                  <p className="flex capitalize items-center gap-2 font-bold"><Car className={"size-7"} />{item.type.name} </p>
-                  <p className="flex capitalize items-center gap-2 font-bold"><Tag className="size-5" /> {item.brand.name} </p>
+                  <p className="flex text-xs capitalize items-center gap-2 font-bold"><Car className={"size-7"} />{item.type.name} </p>
+                  <p className="flex text-xs capitalize items-center gap-2 font-bold"><Tag className="size-5" /> {item.brand.name} </p>
                   <p className="flex capitalize items-center gap-2 font-bold"> {item.is_second ? <Badge variant={'outline'}>Second</Badge> : <Badge variant="success">New</Badge> } </p>
                </div>
             </CardContent>
