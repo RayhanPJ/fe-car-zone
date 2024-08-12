@@ -15,7 +15,7 @@ import { Badge } from "@/components/ui/badge"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
  
 const CarLists = () => {
-   const { data, isLoading, error} = useSWR("/api/cms/cars", fetcher)
+   const { data, isLoading, error} = useSWR("/api/cms/cars", fetcher, { revalidateOnFocus: true})
    const params = useSearchParams()
 
    if (error) return <div className="p-7 bg-destructive text-destructive-foreground rounded-xl">{error}</div>
@@ -57,14 +57,14 @@ const CarLists = () => {
                   <p className="flex capitalize items-center gap-2 font-bold"> {item.is_second ? <Badge variant={'outline'}>Second</Badge> : <Badge variant="success">New</Badge> } </p>
                </div>
             </CardContent>
-            <CardFooter className="space-x-2">
-               <BuyBtn car_id={item.ID} />
-               <Link 
-                  className="btn btn-outline"
-                  href={`/cars/${item.ID}`}>
-                  Detail
-               </Link>
-            </CardFooter>
+            <div className="flex flex-col sm:flex-row items-center gap-3 justify-between p-2">
+            <BuyBtn car_id={item.ID} />
+            <Link 
+               className="btn btn-outline w-full"
+               href={`/cars/${item.ID}`}>
+               Detail
+            </Link>
+            </div>
          </Card>
       ))}
    </GridContainer>
