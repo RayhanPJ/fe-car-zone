@@ -4,7 +4,9 @@ import { Card } from "@/components/ui/card"
 import { API_BASE_URL } from "@/constants/variables"
 
 const getCarByID = async (id) => {
-  const req = await fetch(API_BASE_URL + "/api/cms/cars/" + id,  { cache: "no-store" })
+  const req = await fetch(API_BASE_URL + "/api/cms/cars/" + id,  { cache: "no-store", next: {
+    revalidate: 10
+  } })
   return await req.json()
 }
 
