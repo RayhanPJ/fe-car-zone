@@ -51,6 +51,8 @@ const DataTable = () => {
     })
   }
   const handleConfirm = (order_data, transaction_id) => {
+    // console.log(order_data)
+    // return
     Swal.fire({
       title: "Are you sure?",
       text: "You can't change anything after you confirm this transaction",

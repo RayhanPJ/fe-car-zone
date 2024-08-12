@@ -34,9 +34,10 @@ const OrderList = () => {
       })
    }, [])
 
-   // console.log(orders)
+   console.log(orders)
 
   if (isLoading) return <div className="mx-auto"><Spinner /></div>
+  if(orders?.data.length == 0) return <div className="text-center">You have'nt order anything</div>
   return (
    <>
       {orders?.data.map((item => (

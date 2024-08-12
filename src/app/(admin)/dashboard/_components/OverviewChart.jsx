@@ -20,15 +20,15 @@ import {
 } from "@/components/ui/chart"
 import { Spinner } from "@nextui-org/react"
 
-const chartData = [
-  { date: "1", new: 23, second: 11 },
-  { date: "2", new: 32, second: 43 },
-  { date: "3", new: 66, second: 33 },
-  { date: "4", new: 23, second: 65 },
-  { date: "5", new: 43, second: 21 },
-  { date: "6", new: 44, second: 33 },
-  { date: "7", new: 54, second: 40 },
-]
+// const chartData = [
+//   { date: "1", new: 23, second: 11 },
+//   { date: "2", new: 32, second: 43 },
+//   { date: "3", new: 66, second: 33 },
+//   { date: "4", new: 23, second: 65 },
+//   { date: "5", new: 43, second: 21 },
+//   { date: "6", new: 44, second: 33 },
+//   { date: "7", new: 54, second: 40 },
+// ]
 
 const chartConfig = {
   new: {
