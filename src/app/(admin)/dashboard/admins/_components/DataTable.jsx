@@ -53,22 +53,20 @@ const DataTable = () => {
             <TableCell>No</TableCell>
             <TableCell>Username</TableCell>
             <TableCell>Email</TableCell>
-            <TableCell>Phone Number</TableCell>
-            <TableCell>Address</TableCell>
             <TableCell>Role</TableCell>
             {/* <TableCell>Action</TableCell> */}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {data?.filter(i => i.role == 'admin').map((admin, i) => (
-            <TableRow className="text-center" key={admin.id}>
-              <TableCell>{i + 1}</TableCell>
-              <TableCell>{admin.username}</TableCell>
-              <TableCell>{admin.email}</TableCell>
-              <TableCell>{admin.phone_number}</TableCell>
-              <TableCell>{admin.address}</TableCell>
-              <TableCell>{admin.role}</TableCell>
-              {/* <TableCell>
+          {data
+            ?.filter((i) => i.role == "admin")
+            .map((admin, i) => (
+              <TableRow className="text-center" key={admin.id}>
+                <TableCell>{i + 1}</TableCell>
+                <TableCell>{admin.username}</TableCell>
+                <TableCell>{admin.email}</TableCell>
+                <TableCell>{admin.role}</TableCell>
+                {/* <TableCell>
                 <div className="flex items-center gap-2 justify-center">
                   <DeleteUser
                     userId={admin.id}
@@ -76,8 +74,8 @@ const DataTable = () => {
                   />
                 </div>
               </TableCell> */}
-            </TableRow>
-          ))}
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </>
