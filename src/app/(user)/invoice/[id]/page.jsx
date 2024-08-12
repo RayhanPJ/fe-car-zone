@@ -1,63 +1,77 @@
-"use client";
-
-import React from "react";
-import { fetcher } from "@/api";
-import HeadInvoice from "./_components/HeadInvoice";
-import InfoInvoice from "./_components/InfoInvoice";
-import TableInvoice from "./_components/TableInvoice";
-import CalculateInvoice from "./_components/CalculateInvoice";
+"use client"
+import Invoice from "./_components/Invoice";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import PrintInvoice from "./_components/PrintInvoice";
-import { Spinner } from "@/components/common/Spinner";
 import useSWR from "swr";
-import { useRouter } from "next/router";
+import { fetcher } from "@/api";
+import { useAuth } from "@/hooks/useAuth";
+import { Spinner } from "@/components/common/Spinner";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
-const InvoicePage = () => {
-  const router = useRouter();
-  const { id } = router.query;
+const InvoicePage = ({ params }) => {
+  const { auth } = useAuth()
+  const invoiceRef = useRef(null)
+  const { data : transaction, isLoading } = useSWR("/api/cms/orders/" + auth.userId , fetcher)
+  const myOrder = useMemo(() => transaction?.data.filter(i => i.id == params.id), [transaction])
+  const router = useRouter()
+  const handleDownload = useCallback( async (id) => {
+    const invoice = invoiceRef.current
 
-  console.log(id);
+    try {
+      const canvas = await html2canvas(invoice)
+      const imgData = canvas.toDataURL("image/png")
 
-  const { data: orders, isLoading } = useSWR(
-    id ? `/api/cms/orders/${id}` : null,
-    fetcher,
-    { revalidateOnFocus: true }
-  );
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "px",
+        format:"a4"
+      })
 
-  if (isLoading) {
-    return (
-      <div className="mx-auto">
-        <Spinner />
-      </div>
-    );
-  }
+      const width = pdf.internal.pageSize.getWidth()
+      const height = (canvas.height * width) / canvas.width
 
-  if (!orders || !orders.data) {
-    return <div>No orders data found</div>;
-  }
+      pdf.addImage(imgData, "PNG", 0,0, width, height)
+      pdf.save(`invoice-${id}-${+new Date()}`)
 
-  const invoice = orders.data; // Data invoice langsung dari response
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
 
+  useEffect(() => {
+    if(transaction){
+      // console.log(transaction?.data[0]?.user_id, auth.userId)
+      if(auth.userId != transaction?.data[0]?.user_id){
+        // console.log("ok")
+        router.back()
+      }
+    }
+  }, [transaction])
+
+  if(isLoading) return <Spinner className={"mx-auto my-10"} />
+  // console.log(myOrder)
   return (
-    <section className="flex flex-col gap-3 p-5 w-full min-h-100% justify-center items-center">
-      <div className="w-full px-6">
-        <PrintInvoice />
-      </div>
-      <div className="w-auto p-5 rounded-sm shadow-lg bg-slate-100 text-black">
-        <HeadInvoice invoice_id={invoice.id} />
-        <InfoInvoice
-          buyer={invoice.user.username}
-          date={invoice.updated_at}
-          contact={invoice.user.phone_number || "N/A"}
-        />
-        <TableInvoice product={invoice.car.name} />
-        <div className="grid grid-cols-3 gap-3 pr-4 justify-end">
-          <div className=""></div>
-          <div className="col-span-2 w-full pr-5">
-            <CalculateInvoice price={invoice.car.price} />
-          </div>
+  <>
+    <PrintInvoice onClick={() => handleDownload(params.id)} />
+    <div ref={invoiceRef} className="relative">
+      <Invoice 
+        orderData={myOrder[0]}/>
+      {myOrder[0]?.status &&
+        <div className="absolute top-2/4 -translate-y-2/4 left-2/4 -translate-x-2/4 opacity-10 w-2/4">
+          <Image
+            className="w-full" 
+            priority
+            src={"/static/paid-stamp.png"}
+            width={250}
+            height={250}
+            />
         </div>
-      </div>
-    </section>
+      }
+    </div>
+  </>
   );
 };
 

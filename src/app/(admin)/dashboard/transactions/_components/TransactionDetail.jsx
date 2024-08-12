@@ -59,6 +59,7 @@ const TransactionDetail = ({ userID, transactionData, orderID }) => {
           <h1 className="my-5 text-lg">User Detail</h1>
           <div className="flex items-start gap-3">
             <div className="">
+              <p>ID : {orderData[0].user.id}</p>
               <p>Username : {orderData[0].user.username}</p>
               <p>Email : {orderData[0].user.email}</p>
               <p>Phone : {orderData[0].user.phone_number || "-"}</p>
