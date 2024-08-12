@@ -41,6 +41,7 @@ const DataTable = () => {
               <TableCell>Brand</TableCell>
               <TableCell>Condition</TableCell>
               <TableCell>Options</TableCell>
+              <TableCell>Type</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -75,6 +76,9 @@ const DataTable = () => {
                   </DropdownMenu>
                 </TableCell>
                 <TableCell>
+                  {car.type.name}
+                </TableCell>
+                <TableCell>
                   {car.sold ? <Badge>Sold</Badge> : <Badge variant={'success'}>Available</Badge>  }
                 </TableCell>
                 <TableCell>
@@ -101,6 +105,7 @@ const DataTable = () => {
               <TableCell>Brand</TableCell>
               <TableCell>Condition</TableCell>
               <TableCell>Options</TableCell>
+              <TableCell>Type</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHeader>
@@ -132,6 +137,9 @@ const DataTable = () => {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                </TableCell>
+                <TableCell>
+                  {car.type.name}
                 </TableCell>
                 <TableCell>
                   {car.sold ? <Badge>Sold</Badge> : <Badge variant={'success'}>Available</Badge>  }

@@ -11,7 +11,7 @@ import { BackButton } from "@/components/common/BackButton"
 import { useEffect, useState } from "react"
 import API, { fetcher } from "@/api"
 import { useToast } from "@/components/ui/use-toast"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import useSWR from "swr"
@@ -38,10 +38,12 @@ const formSchema = z.object({
 })
 
 
-const UpdateForm = ({ carID }) => {
+const UpdateForm = () => {
+  const param = useParams()
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const router = useRouter()
+  const carID = param.id
   const {
     inputFileRef,
     handleFileInputChange,
@@ -248,7 +250,7 @@ const UpdateForm = ({ carID }) => {
               Select car brand
             </option>
             {brands.map((item) => (
-              <option key={item.id} value={item.id}>
+              <option key={item.id} value={item.id} selected={item.id == carData.car.brand.id}>
                 {item.name} - {item.id}
               </option>
             ))}
@@ -261,9 +263,15 @@ const UpdateForm = ({ carID }) => {
             {...form.register("is_second")}
             className="w-full input"
           >
-            <option value="">Select car condition</option>
-            <option value="false">New</option>
-            <option value="true">Second</option>
+            <option value="" disabled>Select car condition</option>
+            {["true", "false"].map((item, i) => (
+              <option 
+                key={i}
+                value={item} 
+                selected={item == `${carData?.is_second}`}>
+                  {JSON.parse(item) ? "Second" : "New"}
+              </option>
+            ))}
           </select>
         </div>
         <div className="mb-5">
@@ -277,7 +285,7 @@ const UpdateForm = ({ carID }) => {
               Select car type
             </option>
             {carTypes.map((item) => (
-              <option key={item.ID} value={item.ID}>
+              <option key={item.ID} value={item.ID} selected={item.ID == carData.car.type.ID}>
                 {item.name} - {item.ID}
               </option>
             ))}
