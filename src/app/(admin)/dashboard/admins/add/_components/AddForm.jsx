@@ -31,8 +31,6 @@ const formSchema = z.object({
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password of at least 6 characters"),
   role_id: z.coerce.number({ required_error: "Role is required" }),
-  phone_number: z.string(),
-  address: z.string(),
 });
 
 const AddForm = () => {
@@ -45,8 +43,6 @@ const AddForm = () => {
       email: "",
       password: "",
       role_id: 0,
-      phone_number: "",
-      address: "",
     },
   });
 
@@ -131,34 +127,6 @@ const AddForm = () => {
                     <SelectItem value="10101">Admin</SelectItem>
                   </SelectContent>
                 </Select>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="phone_number"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Phone Number</FormLabel>
-                <FormControl>
-                  <Input type="text" placeholder="Phone Number..." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Address</FormLabel>
-                <Textarea
-                  placeholder="Address..."
-                  className="resize-y"
-                  {...field}
-                />
                 <FormMessage />
               </FormItem>
             )}
