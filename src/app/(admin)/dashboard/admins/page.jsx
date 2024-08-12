@@ -9,7 +9,7 @@ const UsersListPage = () => {
     <>
       <div className="flex items-center justify-between gap-2 py-10 px-3">
         <div className="">
-          <h1 className="text-2xl font-bold">Transaction</h1>
+          <h1 className="text-2xl font-bold">Admins</h1>
           <BreadCrumb />
         </div>
 

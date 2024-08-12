@@ -17,7 +17,6 @@ const InvoicePage = ({ params }) => {
   const { data : transaction, isLoading } = useSWR("/api/cms/orders/" + auth.userId , fetcher)
   const myOrder = useMemo(() => transaction?.data.filter(i => i.id == params.id), [transaction])
   const router = useRouter()
-
   const handleDownload = useCallback( async (id) => {
     const invoice = invoiceRef.current
 

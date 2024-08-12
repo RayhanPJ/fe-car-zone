@@ -7,7 +7,7 @@ const CalculateInvoice = ({ total }) => {
   return (
     <div className="w-2/4 ml-auto">
       <div className="flex items-center justify-between font-bold">
-        <div>TOTAL Amount</div>
+        <div>TOTAL AMOUNT</div>
         <div>{formatCurrency(total)}</div>
       </div>
     </div>

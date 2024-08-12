@@ -1,9 +1,10 @@
 import React from "react";
+
 import OrderList from "./_components/OrderList";
 
 export const metadata = {
-  title: 'My transaction history - carzone'
-}
+  title: "My transaction history - carzone",
+};
 
 const OrderListPage = () => {
   return (
