@@ -11,7 +11,7 @@ import { BackButton } from "@/components/common/BackButton"
 import { useEffect, useState } from "react"
 import API, { fetcher } from "@/api"
 import { useToast } from "@/components/ui/use-toast"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import useSWR from "swr"
@@ -21,6 +21,8 @@ import useImageUploader from "@/hooks/useImageUploader"
 import { UploadIcon } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import TextEditor from "@/components/common/TextEditor"
+import Image from "next/image"
+import formatCurrency from "@/lib/currencyFormat"
 
 const formSchema = z.object({
   image_car: z.string({ required_error: "Car image is required" }),
@@ -36,10 +38,12 @@ const formSchema = z.object({
 })
 
 
-const UpdateForm = ({ carID }) => {
+const UpdateForm = () => {
+  const param = useParams()
   const searchParams = useSearchParams()
   const { toast } = useToast()
   const router = useRouter()
+  const carID = param.id
   const {
     inputFileRef,
     handleFileInputChange,
@@ -51,8 +55,11 @@ const UpdateForm = ({ carID }) => {
   const [carTypes, setCarTypes] = useState([])
   const { data : carData, isLoading } = useSWR(
     API_BASE_URL + "/api/cms/cars/" + carID,
-    fetcher
+    fetcher,
   )
+
+  
+  
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -83,6 +90,7 @@ const UpdateForm = ({ carID }) => {
   useEffect(() => {
     if (carData) {
       // Reset form with new carData
+      console.log(carData)
       form.reset({
         image_car: carData.car.image_car || "",
         name: carData.car.name || "",
@@ -126,6 +134,47 @@ const UpdateForm = ({ carID }) => {
   if(carData.car.sold && !searchParams.get("detail")){
     router.replace("/dashboard/cars")
   }
+  
+  if(searchParams.get("detail")){
+    return <div className="flex flex-col gap-3">
+      <Image
+        className="mx-auto"
+        width={200} 
+        height={200} 
+        src={carData?.car.image_car} alt="" />
+      <div className="my-3">
+        <Label>Car model</Label>
+        <Input readonly value={carData?.car.name} />
+      </div>
+      <div className="my-3">
+        <Label>Price</Label>
+        <Input readonly value={formatCurrency(carData?.car.price)} />
+      </div>
+      <div className="my-3">
+        <Label>Brand</Label>
+        <Input readonly value={`${carData?.car.brand.name} - ${carData?.car.brand.id}`} />
+      </div>
+      <div className="my-3">
+        <Label>Car condition</Label>
+        <Input readonly value={carData?.car.is_second ? "Second" : "New"} />
+      </div>
+      <div className="my-3">
+        <Label>Car type</Label>
+        <Input readonly value={`${carData?.car.type.name} - ${carData?.car.type.ID}`} />
+      </div>
+      <div className="my-3">
+        <Label>Description</Label>
+        <div dangerouslySetInnerHTML={{ __html: carData?.car.description}} />
+      </div>
+
+      <div className="flex gap-3 mt-10">
+        <BackButton />
+        <Link className="btn btn-default" href={`/dashboard/cars/${carID}`}>Update this car</Link> 
+      </div>
+
+    </div>
+  }
+
   return (
     <>
       <form
@@ -168,7 +217,6 @@ const UpdateForm = ({ carID }) => {
                 <Input
                   id="car_image"
                   ref={inputFileRef} 
-                  disabled={!!searchParams.get("detail")} 
                   onChange={handleFileInputChange} 
                   type="file" accept="image/*" className="sr-only" />
               </div>
@@ -179,7 +227,6 @@ const UpdateForm = ({ carID }) => {
           <Label htmlFor="name">Car model</Label>
           <Input
             {...form.register("name")}
-            disabled={!!searchParams.get("detail")}
             type="text"
             placeholder="Car model..."
           />
@@ -188,7 +235,6 @@ const UpdateForm = ({ carID }) => {
           <Label htmlFor="price">Price</Label>
           <Input
             {...form.register("price")}
-            disabled={!!searchParams.get("detail")}
             type="text"
             placeholder="Car price.."
           />
@@ -197,7 +243,6 @@ const UpdateForm = ({ carID }) => {
           <Label htmlFor="brand">Brand</Label>
           <select
             {...form.register("brand_id")}
-            disabled={!!searchParams.get("detail")}
             id="brand"
             className="w-full input"
           >
@@ -205,7 +250,7 @@ const UpdateForm = ({ carID }) => {
               Select car brand
             </option>
             {brands.map((item) => (
-              <option key={item.id} value={item.id}>
+              <option key={item.id} value={item.id} selected={item.id == carData.car.brand.id}>
                 {item.name} - {item.id}
               </option>
             ))}
@@ -216,12 +261,17 @@ const UpdateForm = ({ carID }) => {
           <select
             id="is_second"
             {...form.register("is_second")}
-            disabled={!!searchParams.get("detail")}
             className="w-full input"
           >
-            <option value="">Select car condition</option>
-            <option value="false">New</option>
-            <option value="true">Second</option>
+            <option value="" disabled>Select car condition</option>
+            {["true", "false"].map((item, i) => (
+              <option 
+                key={i}
+                value={item} 
+                selected={item == `${carData?.is_second}`}>
+                  {JSON.parse(item) ? "Second" : "New"}
+              </option>
+            ))}
           </select>
         </div>
         <div className="mb-5">
@@ -230,13 +280,12 @@ const UpdateForm = ({ carID }) => {
             {...form.register("type_id")}
             id="car_type"
             className="w-full input"
-            disabled={!!searchParams.get("detail")}
           >
             <option value="" disabled>
               Select car type
             </option>
             {carTypes.map((item) => (
-              <option key={item.ID} value={item.ID}>
+              <option key={item.ID} value={item.ID} selected={item.ID == carData.car.type.ID}>
                 {item.name} - {item.ID}
               </option>
             ))}
@@ -248,12 +297,10 @@ const UpdateForm = ({ carID }) => {
 
              value={form.watch("description")}
              onChange={(content) => form.setValue("description", content)}
-             disabled={!!searchParams.get("detail")}
              placeholder="Description..."
              className="resize-y" />
           {/* <Textarea
             {...form.register("description")}
-            disabled={!!searchParams.get("detail")}
             placeholder="Description..."
             className="resize-y"
           /> */}

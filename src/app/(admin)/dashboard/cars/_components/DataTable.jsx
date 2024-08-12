@@ -21,7 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
 
 const DataTable = () => {
-  const { data, isLoading, mutate } = useSWR(API_BASE_URL + "/api/cms/cars", fetcher)
+  const { data, isLoading, mutate } = useSWR(API_BASE_URL + "/api/cms/cars", fetcher, { revalidateOnFocus: true })
   
   return (
   <>
@@ -41,6 +41,7 @@ const DataTable = () => {
               <TableCell>Brand</TableCell>
               <TableCell>Condition</TableCell>
               <TableCell>Options</TableCell>
+              <TableCell>Type</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
@@ -54,8 +55,8 @@ const DataTable = () => {
                 <TableCell>{car.brand.name}</TableCell>
                 <TableCell>{
                   car.is_second 
-                  ? <Badge variant={"success"}>New</Badge> 
-                  : <Badge variant={"outline"}>Second</Badge> }
+                  ? <Badge variant={"outline"}>Second</Badge> 
+                  : <Badge variant={"success"}>New</Badge> }
                 </TableCell>
                 <TableCell className="flex items-center gap-2 justify-center">
                   <DropdownMenu>
@@ -73,6 +74,9 @@ const DataTable = () => {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                </TableCell>
+                <TableCell>
+                  {car.type.name}
                 </TableCell>
                 <TableCell>
                   {car.sold ? <Badge>Sold</Badge> : <Badge variant={'success'}>Available</Badge>  }
@@ -101,6 +105,7 @@ const DataTable = () => {
               <TableCell>Brand</TableCell>
               <TableCell>Condition</TableCell>
               <TableCell>Options</TableCell>
+              <TableCell>Type</TableCell>
               <TableCell>Status</TableCell>
             </TableRow>
           </TableHeader>
@@ -132,6 +137,9 @@ const DataTable = () => {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                </TableCell>
+                <TableCell>
+                  {car.type.name}
                 </TableCell>
                 <TableCell>
                   {car.sold ? <Badge>Sold</Badge> : <Badge variant={'success'}>Available</Badge>  }

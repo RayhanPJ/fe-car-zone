@@ -19,6 +19,7 @@ import { useCallback } from "react"
 import Swal from "sweetalert2"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import formatCurrency from "@/lib/currencyFormat"
 
 
 const OrderList = () => {
@@ -34,9 +35,10 @@ const OrderList = () => {
       })
    }, [])
 
-   // console.log(orders)
+   console.log(orders)
 
   if (isLoading) return <div className="mx-auto"><Spinner /></div>
+  if(orders?.data.length == 0) return <div className="text-center">You have'nt order anything</div>
   return (
    <>
       {orders?.data.map((item => (
@@ -65,6 +67,7 @@ const OrderList = () => {
                   />
                <div className="">
                   <h1 className="text-lg font-bold">{item.car.name}</h1>
+                  <p>{formatCurrency(item.car.price)}</p>
                   {item.status &&
                      <p>Confirmed at : {new Date(item.car.updated_at).toLocaleString()}</p>
                   }

@@ -4,11 +4,13 @@ import { Card } from "@/components/ui/card"
 import { API_BASE_URL } from "@/constants/variables"
 
 const getCarByID = async (id) => {
-  const req = await fetch(API_BASE_URL + "/api/cms/cars/" + id,  { cache: "no-store" })
+  const req = await fetch(API_BASE_URL + "/api/cms/cars/" + id,  { cache: "no-store", next: {
+    revalidate: 10
+  } })
   return await req.json()
 }
 
-const UpdateCarsPage = async ({ params, searchParams }) => {
+const UpdateCarsPage = async ({ searchParams }) => {
   return (
   <>
     <div className="flex flex-col md:flex-row items-center justify-between gap-2 py-10 px-3">
@@ -19,7 +21,7 @@ const UpdateCarsPage = async ({ params, searchParams }) => {
     </div>
 
     <Card className="p-5 min-h-fit overflow-x-auto">
-      <UpdateForm carID={params.id} />
+      <UpdateForm />
     </Card>
   </>
   )

@@ -37,8 +37,9 @@ const CarsDetailPage = async ({ params }) => {
       </div>
    </div>
 
-   <div className="grid grid-cols-1 md:grid-cols-2 p-6 mt-10 gap-3 main-container">
-      <Card className="w-full overflow-hidden">
+   <div className="main-container">
+   <div className="flex  justify-between flex-col sm:flex-row items-center mt-10 gap-3">
+      <Card className="w-full overflow-hidden max-h-[350px]">
          <Image 
             className="w-full h-full object-cover object-center"
             src={data?.car.image_car}
@@ -47,7 +48,7 @@ const CarsDetailPage = async ({ params }) => {
             priority
             />
       </Card>
-      <Card className="flex flex-col justify-between">
+      <Card className="w-full flex flex-col justify-between h-full">
          <div>
          <CardHeader>
             <h1 className="text-2xl font-semibold capitalize">{data?.car.name}</h1>
@@ -102,15 +103,16 @@ const CarsDetailPage = async ({ params }) => {
             }
          </CardFooter>
       </Card>
-      <div className="col-span-2">
-         <article  >
-            <h1 className="text-xl font-bold my-10">Description</h1>
+   </div>
+   <div className="col-span-2">
+      <article  >
+         <h1 className="text-xl font-bold my-10">Description</h1>
 
-            <div dangerouslySetInnerHTML={{ __html: data?.car.description }}/>
-         </article >
+         <div dangerouslySetInnerHTML={{ __html: data?.car.description }}/>
+      </article >
 
-         <BackButton className={"w-fit mt-10"} />
-      </div>
+      <BackButton className={"w-fit mt-10"} />
+   </div>
    </div>
    </>
   )

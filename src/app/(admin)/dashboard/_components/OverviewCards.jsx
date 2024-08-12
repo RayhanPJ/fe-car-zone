@@ -16,7 +16,7 @@ import { useEffect, useState } from "react"
 import formatCurrency from "@/lib/currencyFormat"
 
 export const IncomeOverview = () => {
-   const { data, isLoading, isValidating } = useSWR("/api/cms/orders", fetcher, { refreshInterval: 10000 })
+   const { data, isLoading, isValidating } = useSWR("/api/cms/orders", fetcher, { revalidateOnFocus: true })
    const [income, setIncome] = useState(0)
 
    useEffect(() => {
