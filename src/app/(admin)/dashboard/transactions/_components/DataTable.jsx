@@ -134,7 +134,7 @@ const DataTable = () => {
                   <TableCell>Car</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Status</TableCell>
-                  <TableCell>Proof</TableCell>
+                  <TableCell>Payment Proof</TableCell>
                   <TableCell>Date</TableCell>
                   <TableCell>Bank</TableCell>
                   <TableCell>Detail</TableCell>
@@ -222,7 +222,7 @@ const DataTable = () => {
                   <TableCell>Car</TableCell>
                   <TableCell>Amount</TableCell>
                   <TableCell>Status</TableCell>
-                  <TableCell>Proof</TableCell>
+                  <TableCell>Payment Proof</TableCell>
                   <TableCell>Date</TableCell>
                   <TableCell>Bank</TableCell>
                   <TableCell>Detail</TableCell>
