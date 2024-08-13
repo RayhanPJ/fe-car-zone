@@ -75,7 +75,7 @@ const OrderList = () => {
             </CardContent>
             <CardFooter className="flex justify-between items-center">
                <Button variant={"outline"} onClick={() => showImage(item.order_image)}>
-                  View Proof
+                  Payment Proof
                </Button>
                {item.status &&
                   <Link className="btn btn-default" href={`/invoice/${item.id}`}>
